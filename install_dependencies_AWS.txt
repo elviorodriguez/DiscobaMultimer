@@ -1,0 +1,78 @@
+#!/bin/bash -e
+
+############################ BEFORE EVERYTHING ############################
+
+# Make sure curl git and wget are installed
+sudo apt-get -y update
+sudo apt-get -y install curl git wget
+
+# Make sure cuda drivers (11 or higher) and GNU compiler are installed 
+nvcc --version
+gcc --version
+# These will be preinstalled in AMI Tensorflow
+
+###########################################################################
+########################### Install RoseTTAFold ###########################
+###########################################################################
+# Compatible AWS AMI:
+#	Deep Learning AMI GPU TensorFlow 2.12.0 (Ubuntu 20.04) 20230324
+# Compatible AWS EC2:
+#	g4dn.xlarge
+###########################################################################
+
+# Install Miniconda, read agreement, type yes two times and source bashrc
+wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.3.1-0-Linux-x86_64.sh
+bash Miniconda3-py38_23.3.1-0-Linux-x86_64.sh
+source .bashrc
+
+# Clone the repo
+git clone https://github.com/RosettaCommons/RoseTTAFold.git
+cd RoseTTAFold
+
+# create conda environment for RoseTTAFold (NVIDIA driver compatible with cuda11)
+conda env create -f RoseTTAFold-linux.yml
+
+# Download model neural-net weigths (includes 2-track model)
+wget https://files.ipd.uw.edu/pub/RoseTTAFold/weights.tar.gz
+tar xfz weights.tar.gz
+
+# Install other dependencies
+./install_dependencies.sh
+
+###########################################################################
+######################### Install Local ColabFold #########################
+###########################################################################
+# Compatible AWS AMI:
+#	Deep Learning AMI GPU TensorFlow 2.12.0 (Ubuntu 20.04) 20230324
+# Compatible AWS EC2:
+#	g4dn.xlarge
+###########################################################################
+
+# Install GCC
+sudo apt-get -y install gcc
+gcc --version || exit 1
+
+# Install cuda compiler driver 11.
+sudo apt-get -y install nvidia-cuda-toolkit
+nvcc --version || exit 1
+
+# Download and run installer
+wget https://raw.githubusercontent.com/YoshitakaMo/localcolabfold/main/install_colabbatch_linux.sh
+bash install_colabbatch_linux.sh
+
+# Add localcolabfold to path
+sudo echo 'export PATH="/home/ubuntu/localcolabfold/colabfold-conda/bin:$PATH"' >> ~/.bashrc
+
+############################################################################
+######################## OTHER NECESSARY THINGS ############################
+############################################################################
+
+# Remove temp files
+rm ~/Miniconda3-py38_23.3.1-0-Linux-x86_64.sh ~/install_colabbatch_linux.sh ~/RoseTTAFold/weights.tar.gz
+
+# Install dependencies
+pip install biopython
+sudo apt-get install emboss
+sudo apt-get install hhsuite
+
+
