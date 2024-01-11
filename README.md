@@ -12,8 +12,12 @@ For monomeric structure predictions, GPU is required. Take a look at this notebo
 
 ## Local installation
 
-\# Clone the repo
+```bash
+# Clone the repo
 git clone https://github.com/elviorodriguez/DiscobaMultimer.git
+```
 
-\# Make sure the dependencies are met
-cat DiscobaMulti
+```bash
+# Make sure the dependencies are met
+cat DiscobaMultimer
+```
