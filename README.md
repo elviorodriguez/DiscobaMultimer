@@ -240,6 +240,8 @@ You can find a sample of the AF2.config file in `DiscobaMultimer/scripts/AF2.con
 --save-all
 ```
 
+For a full list of available options, run `colabfold_batch -h`.
+
 NOTE: When you run the pipeline in a project folder that already contains the AF2 predictions for the IDs file, the predictions will not be performed. You need to create a new project directory and run again the pipeline pointing to the MSA files with the `-i` flag (`-i ../old_project/merged_MSA`, see **"Performing AF2 predictions on already computed MSAs"**).
 
 ### Setting size restrictions to avoid memory errors
