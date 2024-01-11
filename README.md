@@ -44,7 +44,7 @@ git clone https://github.com/elviorodriguez/DiscobaMultimer.git
 cd DiscobaMultimer
 
 # Install DiscobaMultimer
-bash install/install_MMseqs2_and_DiscobaDB.sh
+bash install/install_MMseqs2_and_DiscobaDB.sh install
 ```
 
 This will take a few minutes, as MMseqs2 is installed and DiscobaDB is built. In general, the istallation of LocalColabFold adds mmseqs to the path, and MMseqs2 installation is skipped. After installation is completed, restart the shell or `source ~/.bashrc`.
