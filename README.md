@@ -115,6 +115,15 @@ Let's use `database.fasta` and `IDs_table.txt` from before as example. As we wan
 
 ## Running batchs of monomer structures predictions
 
+Default options:
+```
+--num-models 5
+--num-recycle 3
+--rank plddt
+--recycle-early-stop-tolerance 0.5
+--num-relax 1
+--use-gpu-relax
+```
 
 ## Running batchs of DiscobaMSA only predictions
 
