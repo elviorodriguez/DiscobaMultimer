@@ -11,10 +11,13 @@ For monomeric structure predictions, GPU is required. Take a look at this notebo
 *To implement...
 
 ## Local installation
-Before everything, make sure the dependencies are met:
+Before everything, update apt-get and make sure the dependencies are met:
   - Make sure curl, git and wget are installed:
     ```bash
+    # Update apt-get
     sudo apt-get -y update
+
+    # Install curl, git and wget
     sudo apt-get -y install curl git wget
     ```
   - Make sure you have LocalColabFold installed:
