@@ -58,3 +58,64 @@ discoba_multimer_batch
 # This will show you the help message for monomer prediction
 discoba_monomer_batch
 ```
+
+## How does it work?
+DiscobaMultimer requieres 2 positional arguments, a file with fasta sequences `database.fasta` (in general will be the proteome) and a file with combinations of **IDs separated with TABS** `IDs_table.txt` to search for them in the databas:
+
+```bash
+discoba_multimer_batch [OPTIONS] <database.fasta> <IDs_table.txt>
+discoba_monomer_batch [OPTIONS] <database.fasta> <IDs_table.txt>
+```
+
+The options will manage what you want to retrieve (MSA, MSA plot, AF2 predictions, etc) and the configuration of each run.
+
+The fasta sequences on `database.fasta` must contain headers **ONLY with the ID of each sequence**. For example:
+
+```bash
+>Tb927.11.7160
+MEQQGDSEAKEHGELTRNGITDNAYDNSVGAFNRTILDRYAHWMTQLDQGACGLRIWKAE
+ELWKRYERVIRVGRGSFGSVFIVYDTERKAYLTVKCMELLGKPGPALRSLSQPTLREVIL
+LSQIDHPNVVRLIDYYLTSDGMLHMCMPIVSHDLVSLIRIWKMRGPRGESSLGRMPLPTV
+KCVFRQLLRGLEYLHRRNIIHRDLKPSNVMLDDNGVVKIVDFGWARFVPRRWQGRLTGPP
+CVVTYRPPEILLGGQCSFKYDSSIDIWSAGCILYEMLTGGKAFSNARNEQQALAAITDML
+GSPSSRSEVYYGAAGGSRLRPSKRQPRNFEERCRMVNMSNESIDFLGEMLQLEPNSRKSA
+SQLLGHSWFSTSPLPCEPEEVSLPGSNTYRLLERKRTR
+>Tb927.10.13720
+MAHVGQQRFGCYIGNIDRSVTLEVLRQVFSQCGTIVDCSLNGRDEDPYRYGFIDFATEDD
+RARAMKYNGFTLAGRKIKVGISKGNVGRPEGYNNNPTPAPAASNTASSAGQHPQVPSQPQ
+VPAVSVPASFLPGMVQQQQQQGATLLLQLLQQGAIDVNNLTAEQQQVLMASLLPQAPAAA
+PGMHVMPPTAPMAYVPPPPQQPWGAPRGVYAGGPLGRPAPYTRPPANPQPPEETLKLREV
+QRKQFLDVVRRDAEKYERKLAERNLKEGRTGSISGSEESSSDEEGEKGHRHSRRKIEGGE
+DTEPEKSATLPMKTESDSVSCPMEVNCNNEGANISGEEAASNGNGGESNNNEDGDAIDCS
+NVETEENNVDEEVENKC
+>Tb927.4.1610
+MIPPAKLNDFFNIVDDFLKKTFRDESFLFAAVKSRQYSESFPGEQLFFTSPPSATTDQPS
+DESLQAGGGELRKTQNFMYFSPRLIFNRDGGYHGKVKLHSGVHVPQVCRFEQGIAVNSEG
+LASGSVKVSDLLEGMEVKGRLAVNTIAPPSKDVWSVAMDYQRRDFYSTLNYQRNGLGSSD
+LLVDCGTKFFNLLAGAGFERQKVSFLEQQDHTAQLDVLYAGVGFTGVNWSVGAKLVRAND
+MWSAARIAFYQRVVPDTSVACAYNFDMEESRVHVSLGFSQGFRLRVPTILQQRACEQLDV
+WTAILPFVGAFKAESGGLCAATIRGIFNGVVHWGLVAQKNVLVENSPIRFGLTLSVESG
+```
+
+For `IDs_table.txt`, each line will correspond to a prediction. For example:
+
+```
+Tb927.11.7160  Tb927.10.13720
+Tb927.11.7160  Tb927.4.1610  Tb927.4.1610
+Tb927.11.7160  Tb927.11.7160
+```
+
+This means that DiscobaMultimer will generate predictions for an heterodimer (first line), an heterotrimer (second line) and a homodimer (third line). Do not separate the the IDs with spaces or commas, only **TABS** will work.
+
+
+## Running batchs of complex structures predictions
+
+
+## Running batchs of monomer structures predictions
+
+
+## Running batchs of DiscobaMSA only predictions
+
+
+## Setting size restrictions to avoid memory crashes
+
