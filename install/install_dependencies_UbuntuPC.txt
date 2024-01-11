@@ -1,0 +1,99 @@
+#!/bin/bash -e
+
+############################ BEFORE EVERYTHING ############################
+
+# Make sure curl git and wget are installed
+sudo apt-get -y update
+sudo apt-get -y install curl git wget
+
+# Make sure CUDA compiler driver (11.1 or later) is installed
+nvcc --version
+
+# And also GNU compiler 9.0 or later (GLIBCXX_3.4.26 is required for openmm)
+gcc --version
+
+# In general gcc is installed with Ubuntu, and CUDA needs to be installed.
+
+# --------------------------- To install CUDA -----------------------------
+
+# Download CUDA from here and follow instructions:
+https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04
+
+# Once installed, reboot
+sudo reboot
+
+# After rebooting, add CUDA to the path by adding the following to .bashrc
+export PATH=/usr/local/cuda-12.3/bin${PATH:+:${PATH}}
+export LD_LIBRARY_PATH=/usr/local/cuda-12.3/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+
+# Make sure to set the correct path corresponding to CUDA version. See it in:
+ls /usr/local
+
+# If you want to see if CUDA works properly, there are some samples here:
+git clone https://github.com/NVIDIA/cuda-samples.git
+
+# cd to any "Samples" folder and run make. E.g.:
+cd cuda-samples/Samples/6_Performance/LargeKernelParameter
+make
+./LargeKernelParameter
+
+# If the last line says "Test passed!", you have CUDA correctly installed
+
+###########################################################################
+########################### Install RoseTTAFold ###########################
+###########################################################################
+# This part does not need to be runned if you will not be using RoseTTAFold
+###########################################################################
+
+# Install Miniconda, read agreement, type yes two times and source bashrc
+wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.3.1-0-Linux-x86_64.sh
+bash Miniconda3-py38_23.3.1-0-Linux-x86_64.sh
+source .bashrc
+
+# Clone the repo
+git clone https://github.com/RosettaCommons/RoseTTAFold.git
+cd RoseTTAFold
+
+# create conda environment for RoseTTAFold (NVIDIA driver compatible with cuda11)
+conda env create -f RoseTTAFold-linux.yml
+
+# Download model neural-net weigths (includes 2-track model)
+wget https://files.ipd.uw.edu/pub/RoseTTAFold/weights.tar.gz
+tar xfz weights.tar.gz
+
+# Install other dependencies
+./install_dependencies.sh
+
+###########################################################################
+######################### Install Local ColabFold #########################
+###########################################################################
+# 
+###########################################################################
+
+# Return to the home dir
+cd ~/
+
+# Download and run installer
+wget https://raw.githubusercontent.com/YoshitakaMo/localcolabfold/main/install_colabbatch_linux.sh
+bash install_colabbatch_linux.sh
+
+# Add localcolabfold to PATH
+sudo echo 'export PATH="/home/elvio/localcolabfold/colabfold-conda/bin:$PATH"' >> ~/.bashrc
+source .bashrc
+
+# Sometimes it ask to install alphafold
+pip install colabfold[alphafold]
+
+############################################################################
+######################## OTHER NECESSARY THINGS ############################
+############################################################################
+
+# Remove temp files
+rm ~/Miniconda3-py38_23.3.1-0-Linux-x86_64.sh ~/install_colabbatch_linux.sh ~/RoseTTAFold/weights.tar.gz
+
+# Install dependencies
+pip install biopython
+sudo apt-get -y install emboss
+sudo apt-get -y install hhsuite
+
+

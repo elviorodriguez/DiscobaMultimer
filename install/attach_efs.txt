@@ -1,0 +1,65 @@
+##################################################################
+########################## Attach EFS ############################
+##################################################################
+
+# First of all, when creating the instance, you have to select
+# the rigth security group to which the instance and the EFS disk 
+# will be connected. To make it work:
+#	- sg-0136259cdf668f790 (EFS_SG)
+# 	- sg-073ecc90c9954864d (launch-wizard-17)
+# Also, assing the IAM role EC2_S3_FullAccess to allow sending
+# data to the S3 bucket.
+
+# After launching the instance, excecute this in the home dir:
+sudo apt-get update
+sudo apt-get -y install awscli
+sudo apt-get -y install git binutils
+git clone https://github.com/aws/efs-utils
+cd efs-utils
+./build-deb.sh
+sudo apt-get -y install ./build/amazon-efs-utils*deb
+cd ..
+mkdir efs
+sudo mount -t efs -o tls fs-0c07b665b4662feb9:/ ~/efs
+
+# To allow automatic mounting of the EFS each time the OS reboots:
+echo "" >> ~/.bashrc
+echo "# Mount EFS" >> ~/.bashrc
+echo "sudo mount -t efs -o tls fs-0c07b665b4662feb9:/ efs" >> ~/.bashrc
+
+
+##################################################################
+####################### Commands backup ##########################
+##################################################################
+
+# Install AWS CLI
+sudo apt-get update
+sudo apt-get -y install awscli
+
+# These are needed before mounting the EFS volume
+sudo apt-get update
+sudo apt-get -y install git binutils
+git clone https://github.com/aws/efs-utils
+cd efs-utils
+./build-deb.sh
+sudo apt-get -y install ./build/amazon-efs-utils*deb
+cd ..
+
+# Or this one instead
+# sudo apt-get install nfs-common
+
+# Attach EFS
+mkdir efs							# dir to mount
+sudo mount -t efs -o tls fs-0c07b665b4662feb9:/ ~/efs		# mount command
+
+# Make permanent
+echo "" >> ~/.bashrc
+echo "# Mount EFS" >> ~/.bashrc
+echo "sudo mount -t efs -o tls fs-0c07b665b4662feb9:/ efs" >> ~/.bashrc
+
+# Need sudo
+sudo su
+# Or need to modify permissions of the efs volume
+
+
+

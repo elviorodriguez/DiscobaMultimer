@@ -1,0 +1,31 @@
+###########################################################################
+########################### Install MSA Machine ###########################
+###########################################################################
+# Compatible AWS AMI:
+#	Deep Learning AMI GPU TensorFlow 2.12.0 (Ubuntu 20.04) 20230324
+# Compatible AWS EC2:
+#	g4dn.xlarge
+###########################################################################
+
+# INSTALL COLABFOLD ------------------------------------------------------------------------------
+sudo apt-get update
+sudo apt-get install -y nvidia-cuda-toolkit
+sudo apt-get install -y gcc
+sudo apt-get -y install curl git wget
+
+# Download and run installer
+wget https://raw.githubusercontent.com/YoshitakaMo/localcolabfold/main/install_colabbatch_linux.sh
+bash install_colabbatch_linux.sh
+
+# Add localcolabfold to path
+sudo echo 'export PATH="/home/ubuntu/localcolabfold/colabfold-conda/bin:$PATH"' >> ~/.bashrc
+
+# ------------------ Install other deps --------------------------------------
+
+sudo apt-get install emboss
+sudo apt-get install hhsuite
+pip install biopython
+
+# ------------------ Instal Discoba-Multimer ------------------------------------
+
+
