@@ -12,7 +12,11 @@ For monomeric structure predictions, GPU is required. Take a look at this notebo
 
 ## Local installation
 Before everything, make sure the dependencies are met:
-  - a
+  - Make sure curl, git and wget are installed.
+    ```bash
+    sudo apt-get -y update
+    sudo apt-get -y install curl git wget
+    ```
   - a
   - a
   - a
