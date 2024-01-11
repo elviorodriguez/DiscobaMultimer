@@ -123,31 +123,32 @@ The `-m` tag tells DiscobaMultimer to generate DiscobaMSAs for each ID line, and
 The resulting filesystem will be as follows:
 ```bash
 .
-├── AF2
+├── AF2                                           <------- AlphaFold2-multimer predictions
 │   ├── Tb927.11.7160__vs__Tb927.10.13720
 │   ├── Tb927.11.7160__vs__Tb927.4.1610__vs__Tb927.4.1610
 │   └── Tb927.11.7160__vs__Tb927.11.7160
-├── colabfold_MSA
+├── colabfold_MSA                                 <------- ColabFoldMSAs produced by ColabFold MSA server
 │   ├── Tb927.11.7160__vs__Tb927.10.13720.a3m
 │   ├── Tb927.11.7160__vs__Tb927.4.1610__vs__Tb927.4.1610.a3m
 │   └── Tb927.11.7160__vs__Tb927.11.7160.a3m
-├── database.fasta
-├── discoba_mmseqs_alignments
+├── database.fasta                                <------- Original FASTA database (proteome)
+├── discoba_mmseqs_alignments                     <------- DiscobaDB monomer MSAs (MMseqs2 output)
 │   ├── Tb927.4.1610
 │   ├── Tb927.10.13720
 │   └── Tb927.11.7160
-├── discoba_paired_unpaired
+├── discoba_paired_unpaired                       <------- DiscobaMSA (A3M files)
 │   ├── Tb927.11.7160__vs__Tb927.10.13720.a3m
 │   ├── Tb927.11.7160__vs__Tb927.4.1610__vs__Tb927.4.1610.a3m
 │   └── Tb927.11.7160__vs__Tb927.11.7160.a3m
-├── IDs_table.txt
-├── merged_MSA
+├── IDs_table.txt                                 <------- Original IDs table
+├── merged_MSA                                    <------- ColabFoldMSAs+DiscobaMSAs (A3M files)
 │   ├── Tb927.11.7160__vs__Tb927.10.13720.a3m
 │   ├── Tb927.11.7160__vs__Tb927.4.1610__vs__Tb927.4.1610.a3m
 │   └── Tb927.11.7160__vs__Tb927.11.7160.a3m
 └── report.log
 ```
 
+By default, discoba_multimer_batch uses the following configuration to run `colabfold_batch`:
 
 ```
 # discoba_multimer_batch default options
@@ -159,6 +160,7 @@ The resulting filesystem will be as follows:
 --num-relax 1
 --use-gpu-relax
 ```
+If you want to use a custom AF2 configuration, see **"Using custom AF2.options file"** section.
 
 ## Running batchs of DiscobaMSA only predictions (without AF2 predictions)
 Following with the same example as before, it is as easy as removing the `-a` flag.
