@@ -10,7 +10,7 @@ For complex structure predictions, GPU is required. Take a look at this notebook
 For monomeric structure predictions, GPU is required. Take a look at this notebook:
 *To implement...
 
-## Installation
+## Local installation
 
 \# Clone the repo
 git clone https://github.com/elviorodriguez/DiscobaMultimer.git
