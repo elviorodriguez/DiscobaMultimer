@@ -200,6 +200,13 @@ cat out2.log
 
 ### Using múltiple GPUs for parallel computing
 
+## References
+- Original Discoba database:
+  
+- DiscobaMultimer application:
+
+
+
 ### Generate MSA plots for generated DiscobaMSAs
 
 ### Generate RoseTTAFold 2-tack predictions (beta)
