@@ -23,9 +23,15 @@ Before everything, make sure the dependencies are met:
     colabfold_batch -h
     ```
     If you get `colabfold_batch: command not found` error, install it following the installation instructions here: https://github.com/YoshitakaMo/localcolabfold.
-  - a
-  - a
-  - a
+  - Make sure you have Biopython package
+    ```bash
+    pip install biopython    
+    ```
+  - Install emboss and hhsuite
+    ```bash
+    sudo apt-get -y install emboss hhsuite
+    ```
+  - miniconda/anaconda??? <------------ (CHECK THIS ONE!!!) ----------------
 
 ```bash
 # Clone the repo and cd to DiscobaMultimer
