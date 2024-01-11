@@ -115,10 +115,38 @@ Let's use `database.fasta` and `IDs_table.txt` from before as example. First, cr
 
 ```
 # Run batch of complex structures predictions with defauls
-discoba_multimer_batch -ma database.fasta IDs_table.txt 2>&1 | tee out.log
+discoba_multimer_batch -ma database.fasta IDs_table.txt 2>&1 | tee report.log
 ```
 
-The `-m` tag tells DiscobaMultimer to generate DiscobaMSAs for each ID line, and `-a` tells that AF2 predictions must be performed on those DiscobaMSAs. It is always recommended to redirect both stdout and stderr to a log file to keep track the progress and check for any errors (_e.g._: using `2>&1 | tee out.log`).
+The `-m` tag tells DiscobaMultimer to generate DiscobaMSAs for each ID line, and `-a` tells that AF2 predictions must be performed on those DiscobaMSAs. It is always recommended to redirect both stdout and stderr to a log file to keep track the progress and check for any errors (_e.g._: using `2>&1 | tee report.log`). DiscobaMultimer will first generate all the MSAs and, once completed, it will start to produce the AF2-multimer predictions.
+
+The resulting filesystem will be as follows:
+```bash
+.
+├── AF2
+│   ├── Tb927.11.7160__vs__Tb927.10.13720
+│   ├── Tb927.11.7160__vs__Tb927.4.1610__vs__Tb927.4.1610
+│   └── Tb927.11.7160__vs__Tb927.11.7160
+├── colabfold_MSA
+│   ├── Tb927.11.7160__vs__Tb927.10.13720.a3m
+│   ├── Tb927.11.7160__vs__Tb927.4.1610__vs__Tb927.4.1610.a3m
+│   └── Tb927.11.7160__vs__Tb927.11.7160.a3m
+├── database.fasta
+├── discoba_mmseqs_alignments
+│   ├── Tb927.4.1610
+│   ├── Tb927.10.13720
+│   └── Tb927.11.7160
+├── discoba_paired_unpaired
+│   ├── Tb927.11.7160__vs__Tb927.10.13720.a3m
+│   ├── Tb927.11.7160__vs__Tb927.4.1610__vs__Tb927.4.1610.a3m
+│   └── Tb927.11.7160__vs__Tb927.11.7160.a3m
+├── IDs_table.txt
+├── merged_MSA
+│   ├── Tb927.11.7160__vs__Tb927.10.13720.a3m
+│   ├── Tb927.11.7160__vs__Tb927.4.1610__vs__Tb927.4.1610.a3m
+│   └── Tb927.11.7160__vs__Tb927.11.7160.a3m
+└── report.log
+```
 
 
 ```
@@ -130,6 +158,20 @@ The `-m` tag tells DiscobaMultimer to generate DiscobaMSAs for each ID line, and
 --recycle-early-stop-tolerance 1.5
 --num-relax 1
 --use-gpu-relax
+```
+
+## Running batchs of DiscobaMSA only predictions (without AF2 predictions)
+Following with the same example as before, it is as easy as removing the `-a` flag.
+
+```
+# Run batch of complex structures predictions with defauls
+discoba_multimer_batch -m database.fasta IDs_table.txt 2>&1 | tee report2.log
+```
+
+If you run the prediction in the same folder as before, DiscobaMultimer will know that the MSA predictions performed were already performed and they will be skipped. You can check it by looking at the log file:
+
+```
+cat out2.log
 ```
 
 ## Running batchs of monomer structures predictions
@@ -145,7 +187,7 @@ The `-m` tag tells DiscobaMultimer to generate DiscobaMSAs for each ID line, and
 --use-gpu-relax
 ```
 
-## Running batchs of DiscobaMSA only predictions
+
 
 
 ## Some additional options
