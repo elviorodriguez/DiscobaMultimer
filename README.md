@@ -33,13 +33,25 @@ Before everything, make sure the dependencies are met:
     ```
   - miniconda/anaconda??? <------------ (CHECK THIS ONE!!!) ----------------
 
+Once you are sure the dependencies are met, clone the repo and perform the installation:
+
 ```bash
 # Clone the repo and cd to DiscobaMultimer
 git clone https://github.com/elviorodriguez/DiscobaMultimer.git
 cd DiscobaMultimer
+
+# Install DiscobaMultimer
+bash install/install_MMseqs2_and_DiscobaDB.sh
 ```
 
+This will take a few minutes, as MMseqs2 is installed and DiscobaDB is built. In general, the istallation of LocalColabFold adds mmseqs to the path, and MMseqs2 installation is skipped. After installation is completed, restart the shell or `source ~/.bashrc`.
+
+Check the installation with:
 ```bash
-# Make sure the dependencies are met
-cat DiscobaMultimer
+# This will show you the help message for complex prediction
+discoba_multimer_batch
+
+
+# This will show you the help message for monomer prediction
+discoba_monomer_batch
 ```
