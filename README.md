@@ -12,12 +12,17 @@ For monomeric structure predictions, GPU is required. Take a look at this notebo
 
 ## Local installation
 Before everything, make sure the dependencies are met:
-  - Make sure curl, git and wget are installed.
+  - Make sure curl, git and wget are installed:
     ```bash
     sudo apt-get -y update
     sudo apt-get -y install curl git wget
     ```
-  - a
+  - Make sure you have LocalColabFold installed:
+    ```bash
+    # This must give no errors
+    colabfold_batch -h
+    ```
+    If you get `colabfold_batch: command not found`, install it following the installation instructions here: https://github.com/YoshitakaMo/localcolabfold
   - a
   - a
   - a
