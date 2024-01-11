@@ -111,12 +111,32 @@ NOTE: If you want to modify the headers of each sequence to other names, you can
 
 
 ## Running batchs of complex structures predictions
-Let's use `database.fasta` and `IDs_table.txt` from before as example. As we want to run a batch of complexes, we need to use `discoba_multimer_batch` alias. In this case 
+Let's use `database.fasta` and `IDs_table.txt` from before as example. First, create a directory for the project to store databases and IDs table files and `cd` to it. As we want to run a batch of complexes, we need to use `discoba_multimer_batch` alias. The most basic call would be as follows:
+
+```
+# Run batch of complex structures predictions with defauls
+discoba_multimer_batch -ma database.fasta IDs_table.txt 2>&1 | tee out.log
+```
+
+The `-m` tag tells DiscobaMultimer to generate DiscobaMSAs for each ID line, and `-a` tells that AF2 predictions must be performed on those DiscobaMSAs. It is always recommended to redirect both stdout and stderr to a log file to keep track the progress and check for any errors (_e.g._: using `2>&1 | tee out.log`).
+
+
+```
+# discoba_multimer_batch default options
+--num-models 5
+--num-recycle 6
+--rank iptm
+--stop-at-score 80
+--recycle-early-stop-tolerance 1.5
+--num-relax 1
+--use-gpu-relax
+```
 
 ## Running batchs of monomer structures predictions
 
-Default options:
+
 ```
+# discoba_monomer_batch default options
 --num-models 5
 --num-recycle 3
 --rank plddt
@@ -128,5 +148,17 @@ Default options:
 ## Running batchs of DiscobaMSA only predictions
 
 
-## Setting size restrictions to avoid memory crashes
+## Some additional options
+
+### Using custom AF2.options file
+
+### Setting size restrictions to avoid memory crashes
+
+### Performing AF2 predictions on already computed MSAs
+
+### Using múltiple GPUs for parallel computing
+
+### Generate MSA plots for generated DiscobaMSAs
+
+### Generate RoseTTAFold 2-tack predictions (beta)
 
