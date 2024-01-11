@@ -22,7 +22,7 @@ Before everything, make sure the dependencies are met:
     # This must give no errors
     colabfold_batch -h
     ```
-    If you get `colabfold_batch: command not found`, install it following the installation instructions here: https://github.com/YoshitakaMo/localcolabfold
+    If you get `colabfold_batch: command not found` error, install it following the installation instructions here: https://github.com/YoshitakaMo/localcolabfold.
   - a
   - a
   - a
