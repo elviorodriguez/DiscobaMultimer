@@ -60,7 +60,7 @@ discoba_monomer_batch
 ```
 
 ## How does it work?
-DiscobaMultimer requieres 2 positional arguments, a file with fasta sequences `database.fasta` (in general will be the proteome) and a file with combinations of **IDs separated with TABS** `IDs_table.txt` to search for them in the database:
+DiscobaMultimer requieres 2 positional arguments, a file with fasta sequences `database.fasta` (in general will be the proteome) and a file with combinations of **IDs separated with TABS** `IDs_table.txt` to search in the database:
 
 ```bash
 discoba_multimer_batch [OPTIONS] <database.fasta> <IDs_table.txt>
@@ -175,6 +175,8 @@ If you run the prediction in the same folder as before, DiscobaMultimer will kno
 ```
 cat report2.log
 ```
+
+The resulting ColabFoldMSAs, DiscobaMSAs, and ColabFoldMSA+DiscobaMSA will be located in `colabfold_MSA`, `discoba_paired_unpaired` and `merged_MSA`, respectively. Additionally, Discoba MSAs for individual proteins (monomers) will be located in `discoba_mmseqs_alignments`.
 
 ## Running batchs of monomer structures predictions
 
