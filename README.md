@@ -111,7 +111,7 @@ NOTE: If you want to modify the headers of each sequence to other names, you can
 
 
 ## Running batchs of complex structures predictions
-
+Let's use `database.fasta` and `IDs_table.txt` from before as example. As we want to run a batch of complexes, we need to use `discoba_multimer_batch` alias. In this case 
 
 ## Running batchs of monomer structures predictions
 
