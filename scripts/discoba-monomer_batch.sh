@@ -343,8 +343,8 @@ if [ "$alphafold" == "true" ]; then
 		else
 			# Use default configuration
 			echo "AF2 without config"
-			echo "Options: --num-models 5 --num-recycle 6 --rank plddt --recycle-early-stop-tolerance 0.5 --num-relax 1 --use-gpu-relax --save-all"
-			colabfold_batch --num-models 5 --num-recycle 6 --rank plddt --recycle-early-stop-tolerance 0.5 --num-relax 1 --use-gpu-relax --save-all $input_a3m_file ./AF2/$protein_ID
+			echo "Options: --num-models 5 --num-recycle 3 --rank plddt --recycle-early-stop-tolerance 0.5 --num-relax 1 --use-gpu-relax"
+			colabfold_batch --num-models 5 --num-recycle 3 --rank plddt --recycle-early-stop-tolerance 0.5 --num-relax 1 --use-gpu-relax $input_a3m_file ./AF2/$protein_ID
 		fi
 	done < "$IDs_table_file"
 fi
