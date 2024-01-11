@@ -110,7 +110,7 @@ This means that DiscobaMultimer will generate predictions for an heterodimer (fi
 NOTE: If you want to modify the headers of each sequence to other names, you can. Just do not add spaces or "-" to the new names. Also, make the corresponding change in the IDs file.
 
 
-## Running batchs of complex structures predictions
+## Running batches of complex structure predictions
 Let's use `database.fasta` and `IDs_table.txt` from before as example. First, create a directory for the project to store databases and IDs table files and `cd` to it. As we want to run a batch of complexes, we need to use `discoba_multimer_batch` alias. The most basic call would be as follows:
 
 ```
@@ -148,7 +148,7 @@ The resulting filesystem will be as follows:
 └── report.log
 ```
 
-By default, discoba_multimer_batch uses the following configuration to run `colabfold_batch`:
+By default, discoba_multimer_batch runs `colabfold_batch` using the following options:
 
 ```
 # discoba_multimer_batch default options
@@ -160,11 +160,11 @@ By default, discoba_multimer_batch uses the following configuration to run `cola
 --num-relax 1
 --use-gpu-relax
 ```
-If you want to use a custom AF2 configuration, see **"Using custom AF2.options file"** section.
+If you want to use a custom AF2 configuration, see **"Using custom AF2.config file"** section.
 
 NOTE: All the filesystem is based on the `ID1 + "__vs__" + ID2 + "__vs__" + ...` notation. If you modify this filesystem nomenclature and then you run additional DiscobaMultimer pipelines with it, your pipeline will not work.
 
-## Running batchs of DiscobaMSA only predictions (without AF2 predictions)
+## Running batches of DiscobaMSA only predictions (without AF2 predictions)
 Following with the same example as before, it is as easy as removing the `-a` flag.
 
 ```
@@ -182,8 +182,23 @@ The resulting ColabFoldMSAs, DiscobaMSAs, and ColabFoldMSA+DiscobaMSA will be lo
 
 NOTE: This is useful to save resources. For example, when you run DiscobaMultimer on AWS or other cloud computing service, you can first run the MSA section using only the `-m` flag on a low price instance (_e.g._,without GPU). After the MSAs are generated, you can switch to a higher capacity instance (with multiple GPUs) and run the pipeline again, but this time with both flags: `-ma`. As the MSAs are already in the filesystem, they will not be computed, and it will jump directly to AF2 section. This will save you a lot of money. For parallel processing using multiple GPUs, see  **"Using múltiple GPUs for parallel computing"** section.
 
-## Running batchs of monomer structures predictions
+## Running batches of monomeric structure predictions
+If you are interested only in monomeric structures, you need to use the `discoba_monomer_batch` alias. 
 
+```bash
+# Run batch of monomeric structure predictions with defauls
+discoba_monomer_batch -ma database.fasta IDs_table.txt 2>&1 | tee report3.log
+```
+
+The flags usage logic is the same as with complexes, but this time, the `IDs_table.txt` file must contain a single ID on each line. For example:
+
+```
+Tb927.11.7160
+Tb927.10.13720
+Tb927.4.1610
+```
+
+By default, discoba_monomer_batch runs `colabfold_batch` using the following options:
 
 ```
 # discoba_monomer_batch default options
@@ -195,12 +210,37 @@ NOTE: This is useful to save resources. For example, when you run DiscobaMultime
 --use-gpu-relax
 ```
 
+If you want to use a custom AF2 configuration, see **"Using custom AF2.config file"** section.
 
-
+NOTE: `discoba_monomer_batch` does not support parallel GPU processing yet (`-g` flag).
 
 ## Some additional options
 
-### Using custom AF2.options file
+### Using custom AF2.config file
+Sometimes you want to run ColabFold's AF2 algorithm with custom options. You can create an `AF2.config` file and call it with the `-c` flag pointing to the `AF2.config` file path. For example, for a batch of complex structure predictions:
+
+```
+# Run batch of complex structures predictions with custom AF2 options
+discoba_multimer_batch -ma -c AF2.config database.fasta IDs_table.txt 2>&1 | tee report4.log
+```
+
+You can find a sample of the AF2.config file in `DiscobaMultimer/scripts/AF2.config` path. They look like this:
+
+```
+# You can add comment lines to this file
+--num-models 5
+--num-recycle 20
+--rank iptm
+# Stops when iptm value has been reached
+--stop-at-score 75
+--recycle-early-stop-tolerance 8.0
+# Only relax rank_001 prediction
+--num-relax 1
+--use-gpu-relax
+--save-all
+```
+
+NOTE: When you run the pipeline in a project folder that already contains the AF2 predictions for the IDs file, the predictions will not be performed. You need to create a new project directory and run again the pipeline pointing to the MSA files with the `-i` flag (`-i ../old_project/merged_MSA`, see **"Performing AF2 predictions on already computed MSAs"**).
 
 ### Setting size restrictions to avoid memory errors
 
