@@ -194,7 +194,7 @@ cat out2.log
 
 ### Using custom AF2.options file
 
-### Setting size restrictions to avoid memory crashes
+### Setting size restrictions to avoid memory errors
 
 ### Performing AF2 predictions on already computed MSAs
 
