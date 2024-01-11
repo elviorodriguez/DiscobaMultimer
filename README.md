@@ -60,7 +60,7 @@ discoba_monomer_batch
 ```
 
 ## How does it work?
-DiscobaMultimer requieres 2 positional arguments, a file with fasta sequences `database.fasta` (in general will be the proteome) and a file with combinations of **IDs separated with TABS** `IDs_table.txt` to search for them in the databas:
+DiscobaMultimer requieres 2 positional arguments, a file with fasta sequences `database.fasta` (in general will be the proteome) and a file with combinations of **IDs separated with TABS** `IDs_table.txt` to search for them in the database:
 
 ```bash
 discoba_multimer_batch [OPTIONS] <database.fasta> <IDs_table.txt>
