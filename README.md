@@ -51,11 +51,11 @@ This will take a few minutes, as MMseqs2 is installed and DiscobaDB is built. In
 
 Check the installation with:
 ```bash
-# This will show you the help message for complex prediction
+# This will lead to an error and show the usage message for complex prediction
 discoba_multimer_batch
 
 
-# This will show you the help message for monomer prediction
+# This will lead to an error and show the usage message for monomer prediction
 discoba_monomer_batch
 ```
 
@@ -245,8 +245,23 @@ For a full list of available options, run `colabfold_batch -h`.
 NOTE: When you run the pipeline in a project folder that already contains the AF2 predictions for the IDs file, the predictions will not be performed. You need to create a new project directory and run again the pipeline pointing to the MSA files with the `-i` flag (`-i ../old_project/merged_MSA`, see **"Performing AF2 predictions on already computed MSAs"**).
 
 ### Setting size restrictions to avoid memory errors
+Some combinations of IDs can result in huge complexes that can not be processed due to GPU memory limitations. To skip the computation of these combinations, you can add the `-s MIN_MAX` flag with the minimum (MIN) and maximum (MAX) size range. For example, if you want to compute only combinations of IDs that results in a summ of residues less than 2000, you may use the following call:
+
+```
+# Run batch of complex structures predictions with custom AF2 options
+discoba_multimer_batch -ma -s 0_2000 database.fasta IDs_table.txt 2>&1 | tee report5.log
+```
+
+This means that only IDs combinations that ends up with a summ of residues between 0 and 2000 will be computed. The rest will be ignored and an `ignored.txt` file will be created in the project directory. This file will contain a description of why the prediction was not performed and pointing to the MSA file that was skipped to keep track on them. An example `ignored.txt` file will look as follows:
+
+```
+ignored:AF2	reason:combined_size(2542)>max_size(2000)	msa_file:../small_networks/merged_MSA/Tb927.11.6350__vs__Tb927.11.6350.a3m
+```
+
+This means that AF2 prediction was ignored, because the combined size was of 2542 and the MAX size value was set to 2000.
 
 ### Performing AF2 predictions on already computed MSAs
+
 
 ### Using múltiple GPUs for parallel computing
 
