@@ -1,14 +1,14 @@
 # DiscobaMultimer
 DiscobaMultimer is designed to systematically perform highthroughput complex structure predictions with AlphaFold2-multimer on Discoba species, using LocalColabFold as AF2 implementation. TaxIDs for Discoba species where added to Discoba database (DiscobaDB) to allow the generation of paired multiple sequence alignments (DiscobaMSA) and combining it or not with the corresponding ColabFoldMSA generated with ColabFold MSA server. It also contains an implementation to run monomer structure predictions or just DiscobaMSA retrivals.
 
-For MSA generation only (no GPU required), take a look at this Colab notebook:
-*To implement...
+  - For MSA generation only (no GPU required), take a look at this Colab notebook:
+  *To implement...
 
-For complex structure predictions (GPU required), take a look at this notebook:
-*To implement...
+  - For complex structure predictions (GPU required), take a look at this notebook:
+  *To implement...
 
-For monomeric  structure predictions (GPU required), take a look at this notebook:
-*To implement...
+  - For monomeric  structure predictions (GPU required), take a look at this notebook:
+  *To implement...
 
 For non Discoba species protein sequences, it works just as fine as ColabFold, but gives a systematic way of ordering the predictions.
 
