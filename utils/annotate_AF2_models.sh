@@ -2,7 +2,15 @@
 
 # Check if the correct number of arguments is provided
 if [ "$#" -ne 2 ]; then
-	echo "Usage: $0 <annotations_file> <folder_path>"
+	echo "Usage: $0 <annotations_file> <AF2_folder_path>"
+ 	echo ""
+  	echo "Used to rename all the filesystem replacing the IDs for matching protein symbols."
+   	echo ""
+   	echo "Parameters:"
+  	echo "  - annotations_file: TSV file containg the IDs to protein symbols correspondance."
+   	echo "                      Take a look at utils/annotations.txt file to see its format."
+   	echo "  - AF2_folder_path : Path to AF2 folder created by DiscobaMultimer that you want "
+        echo "                      to rename the filesystem."
 	exit 1
 fi
 
