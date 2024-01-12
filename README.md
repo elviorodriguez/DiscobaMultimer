@@ -120,29 +120,29 @@ The `-m` tag tells DiscobaMultimer to generate DiscobaMSAs for each ID line, and
 The resulting filesystem will be as follows:
 ```bash
 .
-├── AF2                                           <------- AlphaFold2-multimer predictions
-│   ├── Tb927.11.7160__vs__Tb927.10.13720
-│   ├── Tb927.11.7160__vs__Tb927.4.1610__vs__Tb927.4.1610
-│   └── Tb927.11.7160__vs__Tb927.11.7160
+├── AF2                                           <------- AlphaFold2-multimer predictions directories
+│   ├── Tb927.1.650__vs__Tb927.1.650
+│   ├── Tb927.1.650__vs__Tb927.8.5320
+│   └── Tb927.1.650__vs__Tb927.8.5320__vs__Tb927.1.3400
 ├── colabfold_MSA                                 <------- ColabFoldMSAs produced by ColabFold MSA server
-│   ├── Tb927.11.7160__vs__Tb927.10.13720.a3m
-│   ├── Tb927.11.7160__vs__Tb927.4.1610__vs__Tb927.4.1610.a3m
-│   └── Tb927.11.7160__vs__Tb927.11.7160.a3m
+│   ├── Tb927.1.650__vs__Tb927.1.650.a3m
+│   ├── Tb927.1.650__vs__Tb927.8.5320.a3m
+│   └── Tb927.1.650__vs__Tb927.8.5320__vs__Tb927.1.3400.a3m
 ├── database.fasta                                <------- Original FASTA database (proteome)
 ├── discoba_mmseqs_alignments                     <------- DiscobaDB monomer MSAs (MMseqs2 output)
-│   ├── Tb927.4.1610
-│   ├── Tb927.10.13720
-│   └── Tb927.11.7160
+│   ├── Tb927.1.3400
+│   ├── Tb927.1.650
+│   └── Tb927.8.5320
 ├── discoba_paired_unpaired                       <------- DiscobaMSA (A3M files)
-│   ├── Tb927.11.7160__vs__Tb927.10.13720.a3m
-│   ├── Tb927.11.7160__vs__Tb927.4.1610__vs__Tb927.4.1610.a3m
-│   └── Tb927.11.7160__vs__Tb927.11.7160.a3m
+│   ├── Tb927.1.650__vs__Tb927.1.650.a3m
+│   ├── Tb927.1.650__vs__Tb927.8.5320.a3m
+│   └── Tb927.1.650__vs__Tb927.8.5320__vs__Tb927.1.3400.a3m
 ├── IDs_table.txt                                 <------- Original IDs table
 ├── merged_MSA                                    <------- ColabFoldMSAs+DiscobaMSAs (A3M files)
-│   ├── Tb927.11.7160__vs__Tb927.10.13720.a3m
-│   ├── Tb927.11.7160__vs__Tb927.4.1610__vs__Tb927.4.1610.a3m
-│   └── Tb927.11.7160__vs__Tb927.11.7160.a3m
-└── report.log
+│   ├── Tb927.1.650__vs__Tb927.1.650.a3m
+│   ├── Tb927.1.650__vs__Tb927.8.5320.a3m
+│   └── Tb927.1.650__vs__Tb927.8.5320__vs__Tb927.1.3400.a3m
+└── report.log                                    <------- Log file
 ```
 
 By default, discoba_multimer_batch runs `colabfold_batch` using the following options:
