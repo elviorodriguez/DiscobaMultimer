@@ -111,7 +111,7 @@ Tb927.11.7160  Tb927.11.7160
 
 This means that DiscobaMultimer will generate predictions for an heterodimer (first line), an heterotrimer (second line) and a homodimer (third line). Do not separate the the IDs with spaces or commas, only **TABS** will work.
 
-NOTE: If you want to modify the headers of each sequence to other names, you can. Just do not add spaces or "-" to the new names. Also, make the corresponding change in the IDs file.
+NOTE: If you want to modify the headers of each sequence to other names, you can. Just do not add spaces or "-" to the new names. Also, make the corresponding change in the IDs file. If you work directly with IDs, you can change them later to the corresponding proteins symbols you want using the utility script `DiscobaMultimer/utils/annotate_AF2_models.sh`. Just call it with no arguments to see usage.
 
 
 ## Running batches of complex structure predictions
