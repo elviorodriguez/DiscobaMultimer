@@ -123,6 +123,8 @@ fi
 echo "MMseqs2 DiscobaDB: READY"
 
 cd $WD
+chmod +x ./scripts/*.sh
+chmod +x ./utils/*.sh
 
 # Add an alias for discoba_multimer_run.sh program
 echo "" >> ~/.bashrc
