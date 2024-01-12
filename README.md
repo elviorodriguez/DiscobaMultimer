@@ -328,33 +328,34 @@ discoba_multimer_batch -mr database.fasta IDs_table.txt 2>&1 | tee report10.log
 
 Some plots with contact information, a metrics file, 2 NPZ files, and some other stuff will be created in `RoseTTAFold_2track_results` directory for each IDs line on `IDs_table.txt`.
 
-NOTE: For this, you need to install RF 2-track:
-      
-      ```bash
-      # Go to home directory
-      cd ~/
-      
-      # Install Miniconda, read agreement, type yes two times and source bashrc
-      wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.3.1-0-Linux-x86_64.sh
-      bash Miniconda3-py38_23.3.1-0-Linux-x86_64.sh
-      source .bashrc
-      
-      # Clone the repo
-      git clone https://github.com/RosettaCommons/RoseTTAFold.git
-      cd RoseTTAFold
-      
-      # create conda environment for RoseTTAFold (NVIDIA driver compatible with cuda11)
-      conda env create -f RoseTTAFold-linux.yml
-      
-      # Download model neural-net weigths (includes 2-track model)
-      wget https://files.ipd.uw.edu/pub/RoseTTAFold/weights.tar.gz
-      tar xfz weights.tar.gz
-      
-      # Install other dependencies
-      ./install_dependencies.sh
-      ```
-      
-      If you already have miniconda/anaconda installed, skip the first part. RF 2-track usage is still on beta, but you can give it a try if you are interested.
+NOTE:
+For this, you need to install RF 2-track:
+
+```bash
+# Go to home directory
+cd ~/
+
+# Install Miniconda, read agreement, type yes two times and source bashrc
+wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.3.1-0-Linux-x86_64.sh
+bash Miniconda3-py38_23.3.1-0-Linux-x86_64.sh
+source .bashrc
+
+# Clone the repo
+git clone https://github.com/RosettaCommons/RoseTTAFold.git
+cd RoseTTAFold
+
+# create conda environment for RoseTTAFold (NVIDIA driver compatible with cuda11)
+conda env create -f RoseTTAFold-linux.yml
+
+# Download model neural-net weigths (includes 2-track model)
+wget https://files.ipd.uw.edu/pub/RoseTTAFold/weights.tar.gz
+tar xfz weights.tar.gz
+
+# Install other dependencies
+./install_dependencies.sh
+```
+
+If you already have miniconda/anaconda installed, skip the first part. RF 2-track usage is still on beta, but you can give it a try if you are interested.
     
 
 ## References
