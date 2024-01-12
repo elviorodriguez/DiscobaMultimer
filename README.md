@@ -48,7 +48,7 @@ cd DiscobaMultimer
 bash install/install_MMseqs2_and_DiscobaDB.sh install
 ```
 
-This will take a few minutes, as MMseqs2 is installed and DiscobaDB is built. In general, the istallation of LocalColabFold adds mmseqs to the path, and MMseqs2 installation is skipped. After installation is completed, restart the shell (or `cd ~/` and then `source ~/.bashrc`).
+This will take a few minutes, as MMseqs2 is installed and DiscobaDB is built. In general, when you installed LocalColabFold, mmseqs is added to the path. In this case, MMseqs2 installation is skipped. After installation is completed, restart the shell (or `cd ~/` and then `source ~/.bashrc`).
 
 Check the installation with:
 ```bash
