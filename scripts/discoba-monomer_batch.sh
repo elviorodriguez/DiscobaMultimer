@@ -7,7 +7,7 @@ usage(){
 	echo "OPTIONS:"
 	echo " -m			: computes MSAs"
 	echo " -p			: performs MSA plots"
-	echo " -a			: runs AlphaFold2-multimer"
+	echo " -a			: runs AlphaFold2"
 	echo "ADVANCED OPTIONS:"
 	echo " -s <MIN_MAX>		: minimum and maximum sizes to compute AF2 monomers"
 	echo " -c <AF2.conf>		: path to custom AF2 configuration file"
