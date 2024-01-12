@@ -10,7 +10,7 @@ DiscobaMultimer is designed to systematically perform highthroughput complex str
   - For monomeric  structure predictions (GPU required), take a look at this notebook:
   *To implement...
 
-For non Discoba species protein sequences, it works just as fine as ColabFold, but gives a systematic way of ordering the predictions.
+For non Discoba species protein sequences, it works just as fine as ColabFold, but gives a systematic way to order AF2-multimer predictions.
 
 ## Local installation (Ubuntu)
 Before everything, update apt-get and make sure the dependencies are met:
