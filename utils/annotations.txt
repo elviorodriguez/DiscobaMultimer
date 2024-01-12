@@ -1,0 +1,88 @@
+TriTrypID	Description	Length	Symbol
+Tb927.10.8150	BDF1	301	BDF1
+Tb927.7.4380	BDF4	630	BDF4
+Tb927.10.12410	ADP-ribose pyrophosphatase	228	YSA1
+Tb927.11.10820	Casein kinase II subunit beta	294	CK2B
+Tb927.8.8150	C2 domain containing protein	182	C2cp1
+Tb927.9.14430	Casein kinase II	349	CK2A1
+Tb927.11.10070	BDF3	221	BDF3
+Tb927.11.13400	BDF5	660	BDF5
+Tb927.11.11530	HAT2	604	HAT2
+Tb927.11.5230	EMSY ENT domain containing protein	235	ENTcp1
+Tb927.9.13320	BDF5 binding protein	507	BDF5BP
+Tb927.4.2340	BDF8	512	BDF8
+Tb927.7.2770	hypothetical protein, conserved	408	N/A
+Tb927.6.1070	hypothetical protein, conserved	931	N/A
+Tb927.3.4140	Poly [ADP-ribose] polymerase-like	561	PARP3L
+Tb927.10.7420	BDF2	224	BDF2
+Tb927.2.2190	HDAC3	685	HDAC3
+Tb927.3.2460	NUP155 putative	335	NUP155
+Tb927.6.4330	telomere-associated protein	180	TelAP2
+Tb927.9.4000	telomere-associated protein	361	TelAP3
+Tb927.9.8520	DNAPolE putative	280	POLE
+Tb927.9.13510	Poly(A)-specific ribonuclease PARN-3	623	PARN3
+Tb927.10.12850	ttaggg binding factor (TRF)	382	TRF
+Tb927.3.1560	TRF-Interacting Factor 2 (TIF2)	380	TIF2
+Tb927.11.9870	Telomere-associated protein 1 (TelAP1)	400	TelAP1
+Tb927.11.5550	DNA polymerase theta (DNAPolQ)	846	POLQ
+Tb927.10.2520	PrimPol-like protein 2	732	PPL2
+Tb927.5.800	casein kinase I, isoform 2	332	CK1.2
+Tb927.10.7420	BDF2	224	BDF2
+Tb927.2.2190	HDAC3	685	HDAC3
+Tb927.3.2460	NUP155 putative	335	NUP155
+Tb927.6.4330	telomere-associated protein	180	TelAP2
+Tb927.9.4000	telomere-associated protein	361	TelAP3
+Tb927.9.8520	DNAPolE putative	280	POLE
+Tb927.9.13510	Poly(A)-specific ribonuclease PARN-3	623	PARN3
+Tb927.10.12850	ttaggg binding factor (TRF)	382	TRF
+Tb927.3.1560	TRF-Interacting Factor 2 (TIF2)	380	TIF2
+Tb927.11.9870	Telomere-associated protein 1 (TelAP1)	400	TelAP1
+Tb927.11.5550	DNA polymerase theta (DNAPolQ)	846	POLQ
+Tb927.10.2520	PrimPol-like protein 2	732	PPL2
+Tb927.5.800	casein kinase I, isoform 2	332	CK1.2
+Tb927.1.3400	BDF6	349	BDF6
+Tb927.10.14190	EPL1	460	EPL1
+Tb927.7.4560	HAT1	466	HAT1
+Tb927.1.650	MRGx	199	MRGx
+Tb927.9.2910	EAF6	180	EAF6
+Tb927.11.7880	YNG2	159	YNG2
+Tb927.7.5310	YEATS family (Yaf9/Gas41)	662	YEA2
+Tb927.6.1240	hypothetical protein, conserved	106	N/A
+Tb927.8.5320	MRGBP	133	MRGBP
+Tb927.11.3430	YNG2-like	205	YNG2L
+Tb927.11.6350	BDF7	1271	BDF7
+Tb927.1.2210	nucleosome assembly protein (NAP1)	318	NAP1
+Tb927.3.4880	nucleosome assembly protein (NAP2)	182	NAP2
+Tb927.10.15180	nucleosome assembly protein (NAP3)	366	NAP3
+Tb927.10.11690	YEA1	484	YEA1
+Tb927.10.11720	ZCW1	780	ZCW1
+Tb927.10.2000	Arp4	509	Arp4
+Tb927.10.7420	BDF2	224	BDF2
+Tb927.11.10730	Swr1	1211	Swr1
+Tb927.11.5830	Swc2	243	Swc2
+Tb927.11.6290	Swc6	257	Swc6
+Tb927.3.3020	Arp6	326	Arp6
+Tb927.4.1270	RuvB1	459	RuvB1
+Tb927.4.2000	RuvB2	474	RuvB2
+Tb927.4.980	Act1	372	Act1
+Tb927.7.4040	Swc4	852	Swc4
+Tb927.9.2070	HDAC1 associated protein 1	748	HDAC1AP1
+Tb927.7.1650	Transcriptional Regulator protein SIN3-like	746	SIN3L
+Tb927.6.3170	HDAC1 associated protein 2	481	HDAC1AP2
+Tb927.3.890	HDAC1 associated protein 3	305	HDAC1AP3
+Tb927.10.1680	Histone Deacetylase 1	388	HDAC1
+Tb927.4.3730	HDAC1 associated protein 4	170	HDAC1AP4
+Tb927.10.9930	PHD1	590	PHD1
+Tb927.11.7880	YNG2	159	YNG2
+Tb927.9.2910	EAF6	180	EAF6
+Tb927.10.8310	HAT3	283	HAT3
+Tb927.9.12900	RNA polymerase-associated protein LEO1	580	LEO1
+Tb927.10.13250..1to745	WD40 repeat-containing protein..part1	745	WD40cp_1to745
+Tb927.10.13250..746to1910	WD40 repeat-containing protein..part2	1165	WD40cp_1to745
+Tb927.10.3640	nuclear transmembrane protein, putative	284	NTP
+Tb927.10.4070	hypothetical protein, conserved	330	Tb927.10.4070
+Tb927.11.6420	Sister chromatid cohesion protein pds5	1319	PDS5
+Tb927.4.3400	Apoptosis inhibitor 5 homolog	605	API5
+Tb927.6.1710	hypothetical protein, conserved	109	Tb927.6.1710
+Tb927.9.12340	Calcium-binding EF-hand	681	EF-hand
+
