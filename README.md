@@ -36,7 +36,6 @@ Before everything, update apt-get and make sure the dependencies are met:
     ```bash
     sudo apt-get -y install emboss hhsuite
     ```
-  - miniconda/anaconda???  <<<------------ (CHECK THIS ONE!!!) ----------------<<<
 
 Once you are sure the dependencies are met, clone the repo and perform the installation:
 
