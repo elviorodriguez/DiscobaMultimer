@@ -78,7 +78,7 @@ wget https://raw.githubusercontent.com/YoshitakaMo/localcolabfold/main/install_c
 bash install_colabbatch_linux.sh
 
 # Add localcolabfold to PATH
-sudo echo 'export PATH="/home/elvio/localcolabfold/colabfold-conda/bin:$PATH"' >> ~/.bashrc
+sudo echo 'export PATH="/home/$USER/localcolabfold/colabfold-conda/bin:$PATH"' >> ~/.bashrc
 source .bashrc
 
 # Sometimes it ask to install alphafold
