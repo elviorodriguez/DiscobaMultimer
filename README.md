@@ -37,7 +37,7 @@ Before everything, update apt-get and make sure the dependencies are met:
     sudo apt-get -y install emboss hhsuite
     ```
 
-Once you are sure the dependencies are met, clone the repo and perform the installation:
+Once dependencies are met, clone the repo and perform the installation:
 
 ```bash
 # Clone the repo and cd to DiscobaMultimer
