@@ -59,6 +59,9 @@ discoba_multimer_batch
 discoba_monomer_batch
 ```
 
+## Local installation (Other systems)
+The program was successfully tested on Ubuntu 20.04, 22.04 and some AWS linux AMIs (_e.g._, Deep Learning AMI GPU TensorFlow 2.12.0 (Ubuntu 20.04) 20230324). I do not know if it is able to run on Windows subsystem for Linux or MAC. In theory, if you can satisfy all the dependencies, their executables are in the $PATH, and you have bash as interpreter, it must work. Let me know if you try.
+
 ## How does it work?
 DiscobaMultimer requieres 2 positional arguments, a file with fasta sequences `database.fasta` (in general will be the proteome) and a file with combinations of **IDs separated with TABS** `IDs_table.txt` to search in the database:
 
@@ -212,7 +215,7 @@ By default, discoba_monomer_batch runs `colabfold_batch` using the following opt
 
 If you want to use a custom AF2 configuration, see **"Using custom AF2.config file"** section.
 
-NOTE: `discoba_monomer_batch` does not support parallel GPU processing yet (`-g` flag).
+NOTE: `discoba_monomer_batch` does not support automatic parallel GPU processing yet (`-g` flag). For a manual parallel processing implementation, see **"Using múltiple GPUs for parallel computing"** section.
 
 ## Some additional options
 
@@ -260,14 +263,98 @@ ignored:AF2	reason:combined_size(2542)>max_size(2000)	msa_file:../small_networks
 
 This means that AF2 prediction was ignored, because the combined size was of 2542 and the MAX size value was set to 2000.
 
-### Performing AF2 predictions on already computed MSAs
+### Performing AF2 predictions on already computed MSAs from another projects
+If you already computed all the MSAs for an `IDs_table.txt` file using `-m` only flag, you can point to them from another project folder by removing `-m` and using the `-i` flag. Here you have 3 examples:
 
+```
+# Run using merged_MSAs from another project folder
+discoba_multimer_batch -a -i ../other_project_folder_path/merged_MSA database.fasta IDs_table.txt 2>&1 | tee report6.log
+
+# Run using ColabFoldMSAs from another project folder
+discoba_multimer_batch -a -i ../other_project_folder_path/colabfold_MSA database.fasta IDs_table.txt 2>&1 | tee report7.log
+
+# Run using DiscobaMSA (without ColabFoldMSA merging) from another project folder
+discoba_multimer_batch -a -i ../other_project_folder_path/discoba_paired_unpaired database.fasta IDs_table.txt 2>&1 | tee report8.log
+```
+
+This will compute AF2 models using these A3M files instead of generating A3M files again.
+
+NOTE: If you want to use your custom MSAs created with other pipelines, I recommended to just use `colabfold_batch` with the A3M file as input.
 
 ### Using múltiple GPUs for parallel computing
+On systems with múltiple GPUs, you can use the `-g GPUs_to_use` flag to allow parallel processing of the `IDs_table.txt` file. For example:
+
+```
+# Run batch of complex structures predictions using automatic parallel processing
+discoba_multimer_batch -ma -g 8 database.fasta IDs_table.txt 2>&1 | tee report9.log
+```
+
+This will use 8 GPUs in parallel. Internally, DiscobaMultimer will split `IDs_table.txt` into 8 and excecute each splitted file into a different GPU, while masking the other GPUs using CUDA_VISIBLE_DEVICES. This means that each GPU will not share VRAM, nor GPU usage with other GPUs.
+
+Alternatively, you can do a more trivial parallel processing excecution by manually splitting `IDs_table.txt` and calling DiscobaMultimer on separate CUDA devices manually:
+
+```
+# Run batch of complex structures predictions wusing manual parallel processing (GPU ID 0)
+CUDA_VISIBLE_DEVICES=0 discoba_multimer_batch -ma database.fasta IDs_table_1.txt 2>&1 | tee report_GPU0.log
+
+# Run batch of complex structures predictions wusing manual parallel processing (GPUs IDs 1 and 2, they will share VRAM) 
+CUDA_VISIBLE_DEVICES=1,2 discoba_multimer_batch -ma -g 8 database.fasta IDs_table_2.txt 2>&1 | tee report_GPU1and2.log
+
+# Run batch of complex structures predictions wusing manual parallel processing (GPU ID 3)
+CUDA_VISIBLE_DEVICES=3 discoba_multimer_batch -ma -g 8 database.fasta IDs_table_3.txt 2>&1 | tee report_GPU3.log
+```
+
+NOTE: Do not execute multiple `-g` flag calls on the same system, because DiscobaMultimer is not aware of which GPUs are already processing predictions and may lead to errors.
 
 ### Generate MSA plots for generated DiscobaMSAs
+To get a visual representation of how many sequences are retrived for each target use the `-p` flag.
+
+```
+# Compute DiscobaMSAs and get their MSA plots
+discoba_multimer_batch -mp database.fasta IDs_table.txt 2>&1 | tee report10.log
+```
+
+This will create an MSA plot for each ID line on `IDs_table.txt`. The results will be stored in `msa_plots` directory.
+
+NOTE: MSA plot generation is not so time efficient. So, do not use it for large datasets.
 
 ### Generate RoseTTAFold 2-tack predictions (beta)
+If you want to retrive contact information using the RoseTTAFold 2-track model, you can do it by adding the `-r` tag:
+
+```
+# Compute DiscobaMSAs and use them to retrive contact info with RF 2-track model
+discoba_multimer_batch -mr database.fasta IDs_table.txt 2>&1 | tee report10.log
+```
+
+Some plots with contact information, a metrics file, 2 NPZ files, and some other stuff will be created in `RoseTTAFold_2track_results` directory for each IDs line on `IDs_table.txt`.
+
+NOTE: For this, you need to install RF 2-track:
+      
+      ```
+      # Go to home directory
+      cd ~/
+      
+      # Install Miniconda, read agreement, type yes two times and source bashrc
+      wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.3.1-0-Linux-x86_64.sh
+      bash Miniconda3-py38_23.3.1-0-Linux-x86_64.sh
+      source .bashrc
+      
+      # Clone the repo
+      git clone https://github.com/RosettaCommons/RoseTTAFold.git
+      cd RoseTTAFold
+      
+      # create conda environment for RoseTTAFold (NVIDIA driver compatible with cuda11)
+      conda env create -f RoseTTAFold-linux.yml
+      
+      # Download model neural-net weigths (includes 2-track model)
+      wget https://files.ipd.uw.edu/pub/RoseTTAFold/weights.tar.gz
+      tar xfz weights.tar.gz
+      
+      # Install other dependencies
+      ./install_dependencies.sh
+      ```
+      If you already have miniconda/anaconda installed, skip the first part. RF 2-track usage is still on beta, but you can give it a try if you are interested.
+    
 
 ## References
 - Original Discoba database:
