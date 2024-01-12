@@ -185,7 +185,7 @@ cat report2.log
 
 The resulting ColabFoldMSAs, DiscobaMSAs, and ColabFoldMSA+DiscobaMSA will be located in `colabfold_MSA`, `discoba_paired_unpaired` and `merged_MSA`, respectively. Additionally, Discoba MSAs for individual proteins (monomers) will be located in `discoba_mmseqs_alignments`.
 
-NOTE: This is useful to save resources. For example, when you run DiscobaMultimer on AWS or other cloud computing service, you can first run the MSA section using only the `-m` flag on a low price instance (_e.g._,without GPU). After the MSAs are generated, you can switch to a higher capacity instance (with multiple GPUs) and run the pipeline again, but this time with both flags: `-ma`. As the MSAs are already in the filesystem, they will not be computed, and it will jump directly to AF2 section. This will save you a lot of money. For parallel processing using multiple GPUs, see  **"Using múltiple GPUs for parallel computing"** section.
+NOTE: This is useful to save resources. For example, when you run DiscobaMultimer on AWS or other cloud computing service, you can first run the MSA section using only the `-m` flag on a low price instance (_e.g._,without GPU). After the MSAs are generated, you can switch to a higher capacity instance (with multiple GPUs) and run the pipeline again, but this time with both flags: `-ma`. As MSAs are already in the project directory, they will not be computed, and it will jump directly to AF2 section. This will save you a lot of money. For parallel processing using multiple GPUs, see  **"Using múltiple GPUs for parallel computing"** section.
 
 ## Running batches of monomeric structure predictions
 If you are interested only in monomeric structures, you need to use the `discoba_monomer_batch` alias. 
