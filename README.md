@@ -64,7 +64,7 @@ discoba_monomer_batch
 The program was successfully tested on Ubuntu 20.04, 22.04 and some AWS linux AMIs (_e.g._, Deep Learning AMI GPU TensorFlow 2.12.0 (Ubuntu 20.04) 20230324). I do not know if it is able to run on Windows subsystem for Linux or MAC. In theory, if you can satisfy all the dependencies, their executables are in the $PATH, and you have bash as interpreter, it must work. Let me know if you try.
 
 ## How does it work?
-DiscobaMultimer requieres 2 positional arguments, a file with fasta sequences `database.fasta` (in general will be the proteome) and a file with combinations of **IDs separated with TABS** `IDs_table.txt` to search in the database:
+DiscobaMultimer requieres 2 positional arguments, a file with fasta sequences `database.fasta` (in general will be the target species proteome) and a file with combinations of **IDs separated with TABS** `IDs_table.txt` to search in the database:
 
 ```bash
 discoba_multimer_batch [OPTIONS] <database.fasta> <IDs_table.txt>
