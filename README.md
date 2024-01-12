@@ -361,4 +361,4 @@ If you already have miniconda/anaconda installed, skip the first part. RF 2-trac
 ## References
 - Original Discoba database paper:
   
-- DiscobaMultimer application on Histone Acetylation Related Complexes:
+- DiscobaMultimer application on Histone Acetylation Related Complexes preprint:
