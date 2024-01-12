@@ -330,7 +330,7 @@ Some plots with contact information, a metrics file, 2 NPZ files, and some other
 
 NOTE: For this, you need to install RF 2-track:
       
-      ```
+      ```bash
       # Go to home directory
       cd ~/
       
@@ -353,6 +353,7 @@ NOTE: For this, you need to install RF 2-track:
       # Install other dependencies
       ./install_dependencies.sh
       ```
+      
       If you already have miniconda/anaconda installed, skip the first part. RF 2-track usage is still on beta, but you can give it a try if you are interested.
     
 
