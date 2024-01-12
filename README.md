@@ -10,6 +10,8 @@ For complex structure predictions (GPU required), take a look at this notebook:
 For monomeric  structure predictions (GPU required), take a look at this notebook:
 *To implement...
 
+For non Discoba species protein sequences, it works just as fine as ColabFold, but gives a systematic way of ordering the predictions.
+
 ## Local installation (Ubuntu)
 Before everything, update apt-get and make sure the dependencies are met:
   - Make sure curl, git and wget are installed:
