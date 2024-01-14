@@ -5,7 +5,7 @@ TaxIDs for Discoba species where added to Discoba database (DiscobaDB) to allow 
 
   - For MSA generation only (no GPU required), take a look at this Colab notebook:
     
-    [Open DiscobaMultimer_complexes_batch.ipynb in Colab](https://colab.research.google.com/github/elviorodriguez/DiscobaMultimer/blob/main/DiscobaMultimer_complexes_batch.ipynb)
+    [Open DiscobaMultimer_MSA_only.ipynb in Colab](https://colab.research.google.com/github/elviorodriguez/DiscobaMultimer/blob/main/DiscobaMultimer_MSA_only.ipynb)
 
   - For complex structure predictions (GPU required), take a look at this notebook:
 
