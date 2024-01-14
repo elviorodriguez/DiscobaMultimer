@@ -13,7 +13,7 @@ TaxIDs for Discoba species where added to Discoba database (DiscobaDB) to allow 
     
   - For monomeric  structure predictions (GPU required), take a look at this notebook:
     
-  *To implement...
+  [Open DiscobaMultimer_monomers_batch.ipynb in Colab](https://colab.research.google.com/github/elviorodriguez/DiscobaMultimer/blob/main/DiscobaMultimer_monomers_batch.ipynb)
 
 For non Discoba species, it works just as fine as ColabFold, but gives a systematic way to order AF2-multimer predictions.
 
