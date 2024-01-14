@@ -7,8 +7,8 @@ TaxIDs for Discoba species where added to Discoba database (DiscobaDB) to allow 
     https://github.com/elviorodriguez/DiscobaMultimer/blob/main/DiscobaMultimer_MSA_only.ipynb
 
   - For complex structure predictions (GPU required), take a look at this notebook:
-    https://colab.research.google.com/github/elviorodriguez/DiscobaMultimer/DiscobaMultimer_complexes_batch.ipynb
-
+    https://github.com/elviorodriguez/DiscobaMultimer/blob/main/DiscobaMultimer_complexes_batch.ipynb
+    
   - For monomeric  structure predictions (GPU required), take a look at this notebook:
   *To implement...
 
