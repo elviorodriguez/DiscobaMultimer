@@ -4,7 +4,7 @@ DiscobaMultimer is designed to systematically perform high performance computing
 TaxIDs for Discoba species where added to Discoba database (DiscobaDB) to allow the generation of paired multiple sequence alignments (DiscobaMSA) and combining it with the corresponding ColabFoldMSA generated with ColabFold MSA server. It also contains an implementation to run monomer structure predictions and one to just retrive paired+unpaired DiscobaMSAs (without protein structure predictions).
 
   - For MSA generation only (no GPU required), take a look at this Colab notebook:
-    https://colab.research.google.com/github/elviorodriguez/DiscobaMultimer/DiscobaMultimer_MSA_only.ipynb
+    https://github.com/elviorodriguez/DiscobaMultimer/blob/main/DiscobaMultimer_MSA_only.ipynb
 
   - For complex structure predictions (GPU required), take a look at this notebook:
     https://colab.research.google.com/github/elviorodriguez/DiscobaMultimer/DiscobaMultimer_complexes_batch.ipynb
