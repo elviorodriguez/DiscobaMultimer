@@ -17,7 +17,7 @@ TaxIDs for Discoba species where added to the original Discoba database (Discoba
 
 For non Discoba species, it works just as fine as ColabFold, but gives a systematic way to order AF2-multimer predictions.
 
-To reproduce the data of the original article (see **"References"** section), take a look at the `README.md` file inside `acetylation_related_complexes` directory.
+To reproduce the original DiscobaMultimer article data (see **"References"** section), take a look at the `README.md` file inside `acetylation_related_complexes` directory.
 
 ## Local installation (Ubuntu)
 Before everything, update apt-get and make sure the dependencies are met:
