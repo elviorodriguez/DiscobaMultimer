@@ -12,6 +12,8 @@ DiscobaMultimer is designed to systematically perform highthroughput complex str
 
 For non Discoba species, it works just as fine as ColabFold, but gives a systematic way to order AF2-multimer predictions.
 
+To reproduce the data produced for the original article (see **"References"** section), take a look at the `README.md` file inside `acetylation_related_complexes` directory.
+
 ## Local installation (Ubuntu)
 Before everything, update apt-get and make sure the dependencies are met:
   - Make sure curl, git and wget are installed:
@@ -61,7 +63,7 @@ discoba_monomer_batch
 ```
 
 ## Local installation (Other systems)
-The program was successfully tested on Ubuntu 20.04, 22.04 and some AWS linux AMIs (_e.g._, Deep Learning AMI GPU TensorFlow 2.12.0 (Ubuntu 20.04) 20230324). I do not know if it is able to run on Windows subsystem for Linux or MAC. In theory, if you can satisfy all the dependencies, their executables are in the $PATH, and you have bash as interpreter, it must work. Let me know if you try.
+The program was successfully tested on Ubuntu 20.04, 22.04, 23.10 and some AWS Linux AMIs (_e.g._, Deep Learning AMI GPU TensorFlow 2.12.0 (Ubuntu 20.04) 20230324). I do not know if it is able to run on Windows subsystem for Linux or MAC. In theory, if you can satisfy all the dependencies, their executables are in the $PATH, and you have bash as interpreter, it must work. Let me know if you try.
 
 ## How does it work?
 DiscobaMultimer requieres 2 positional arguments, a file with fasta sequences `database.fasta` (in general will be the target species proteome) and a file with combinations of **IDs separated with TABS** `IDs_table.txt` to search in the database:
