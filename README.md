@@ -174,7 +174,7 @@ NOTE: All the filesystem is based on the `ID1 + "__vs__" + ID2 + "__vs__" + ...`
 Following with the same example as before, it is as easy as removing the `-a` flag.
 
 ```
-# Run batch of complex structures predictions with defauls
+# Run batch of paired+unpaired DiscobaMSA predictions
 discoba_multimer_batch -m database.fasta IDs_table.txt 2>&1 | tee report2.log
 ```
 
