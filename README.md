@@ -128,7 +128,7 @@ The `-m` tag tells DiscobaMultimer to generate DiscobaMSAs for each ID line, and
 
 The resulting filesystem will be as follows:
 ```bash
-.
+project_directory
 ├── AF2                                           <------- AlphaFold2-multimer predictions directories
 │   ├── Tb927.1.650__vs__Tb927.1.650
 │   ├── Tb927.1.650__vs__Tb927.8.5320
