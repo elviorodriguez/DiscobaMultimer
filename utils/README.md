@@ -34,5 +34,39 @@ As its name suggests, it allows to check if all the IDs in the `IDs_table.txt` f
 $DiscobaMultimerPath/utils/annotate_AF2_models.sh <MSA_directory> <IDs_table.txt>
 ```
 
+## extract_pLDDT_pTM_ipTM.sh
+This is a useful script to retrieve quickly the mean pLDDT, pTM and ipTM metrics of each model in an AF2 directory.
+
+```
+# Usage:
+$DiscobaMultimerPath/utils/annotate_AF2_models.sh <AF2_folder_path> <output_file_name>
+```
+
+You will get a TSV file with the following columns: ID1  ID2  rank  pLDDT  pTM  ipTM
 
 
+## get_AF2_folder_for_PIDs.sh
+Used to retreive PID information about currently running DiscobaMultimer calls.
+
+
+```
+# Usage:
+$DiscobaMultimerPath/utils/get_AF2_folder_for_PIDs.sh all [pid] | PID1 PID2 ... PIDn
+
+# Retrieve AF2 folder paths of currently running predictions
+$DiscobaMultimerPath/utils/get_AF2_folder_for_PIDs.sh all
+
+# Same, but include their PIDs
+$DiscobaMultimerPath/utils/get_AF2_folder_for_PIDs.sh all pid
+
+# Retrieve AF2 folder paths of a list of running PIDs
+$DiscobaMultimerPath/utils/get_AF2_folder_for_PIDs.sh 6492 51234 6934
+```
+
+## shuffle_IDs.sh
+Makes a random shuffle of the lines in `IDs_table.txt`.
+
+```
+# Usage
+$DiscobaMultimerPath/utils/shuffle_IDs.sh `IDs_table.txt`
+```
