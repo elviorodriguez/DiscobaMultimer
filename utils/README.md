@@ -26,3 +26,13 @@ As its name suggests, it allows to check if all the IDs in the `IDs_table.txt` f
 $DiscobaMultimerPath/utils/annotate_AF2_models.sh <database.fasta> <IDs_table.txt>
 ```
 
+## check_if_PAIRS_are_in_MSA_folder.sh
+As its name suggests, it allows to check if all the IDs in the `IDs_table.txt` file were already computed and present in an MSA directory.
+
+```
+# Usage:
+$DiscobaMultimerPath/utils/annotate_AF2_models.sh <MSA_directory> <IDs_table.txt>
+```
+
+
+
