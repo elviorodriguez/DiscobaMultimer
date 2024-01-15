@@ -168,7 +168,7 @@ By default, discoba_multimer_batch runs `colabfold_batch` using the following op
 ```
 If you want to use a custom AF2 configuration, see **"Using custom AF2.config file"** section.
 
-NOTE: All the filesystem is based on the `ID1 + "__vs__" + ID2 + "__vs__" + ...` notation. If you modify this filesystem nomenclature and then you run additional DiscobaMultimer pipelines with it, your pipeline will not work.
+NOTE: All the filesystem is based on the `ID1 + "__vs__" + ID2 + "__vs__" + ...` notation. If you modify this filesystem nomenclature and then you run additional DiscobaMultimer pipelines with it, your pipeline will not work as expected.
 
 ## Running batches of DiscobaMSA only predictions (without AF2 predictions)
 Following with the same example as before, it is as easy as removing the `-a` flag.
