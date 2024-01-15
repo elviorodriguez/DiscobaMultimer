@@ -178,7 +178,7 @@ Following with the same example as before, it is as easy as removing the `-a` fl
 discoba_multimer_batch -m database.fasta IDs_table.txt 2>&1 | tee report2.log
 ```
 
-If you run the prediction in the same folder as before, DiscobaMultimer will know that the MSA predictions performed were already performed and they will be skipped. You can check it by looking at the log file:
+If you run the prediction in the same folder as before, DiscobaMultimer will know that the MSA predictions were already performed and they will be skipped. You can check it by looking at the log file:
 
 ```
 cat report2.log
