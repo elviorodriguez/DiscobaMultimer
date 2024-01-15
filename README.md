@@ -81,7 +81,7 @@ discoba_monomer_batch [OPTIONS] <database.fasta> <IDs_table.txt>
 
 The options will manage what you want to retrieve (MSA, MSA plot, AF2 predictions, etc) and the configuration of each run.
 
-The fasta sequences on `database.fasta` must contain headers **ONLY with the ID of each sequence**. For example:
+The fasta sequences on `database.fasta` must contain headers **ONLY with the ID of each sequence**. Let's take the example located in `example` directory:
 
 ```bash
 >Tb927.1.650
