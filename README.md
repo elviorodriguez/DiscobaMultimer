@@ -108,6 +108,7 @@ For `IDs_table.txt`, each line will correspond to a prediction. For example:
 Tb927.1.650  Tb927.8.5320
 Tb927.1.650  Tb927.8.5320  Tb927.1.3400
 Tb927.1.650  Tb927.1.650
+
 ```
 
 This means that DiscobaMultimer will generate predictions for an heterodimer (first line), an heterotrimer (second line) and a homodimer (third line). Do not separate the the IDs with spaces or commas, only **TABS** will work.
