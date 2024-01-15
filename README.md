@@ -159,7 +159,7 @@ By default, discoba_multimer_batch runs `colabfold_batch` using the following op
 ```
 # discoba_multimer_batch default options
 --num-models 5
---num-recycle 6
+--num-recycle 10
 --rank iptm
 --stop-at-score 80
 --recycle-early-stop-tolerance 1.5
