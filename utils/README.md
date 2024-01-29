@@ -4,8 +4,10 @@
 ## generate_2mers_combinations.py
 Utility to convert a list of single IDs (e.g.: a list of proteins comming from a CoIP experiment) to an IDs_table.txt file for DiscobaMultimer runs with all pairwise combinations (2-mers).
 ```
-# Usage: ./generate_2mers_combinations.py <single_IDs.txt> <output_IDs_table.txt> [-e]
-# Parameters
+# Usage:
+$DiscobaMultimerPath/utils/generate_2mers_combinations.py <single_IDs.txt> <output_IDs_table.txt> [-e]
+
+# Parameters:
 #   single_IDs.txt        : File with one ID/protein name per line..
 #   output_IDs_table.txt  : Name of the output TSV file..
 #   -e (optional)         : Excludes homodimers combinations.
