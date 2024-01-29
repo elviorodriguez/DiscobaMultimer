@@ -10,7 +10,7 @@ $DiscobaMultimerPath/utils/generate_2mers_combinations.py <single_IDs.txt> <outp
 # Parameters:
 #   single_IDs.txt        : File with one ID/protein name per line..
 #   output_IDs_table.txt  : Name of the output TSV file..
-#   -e (optional)         : Excludes homodimers combinations.
+#   -e (optional)         : Excludes homodimeric combinations.
 ```
 
 ## annotate_AF2_models.sh
