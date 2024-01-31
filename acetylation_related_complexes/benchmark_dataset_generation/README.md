@@ -1,2 +1,2 @@
 # Benchmark dataset generation
-This contains the files needed to generate the benchmark dataset used in the original paper. It contains a file with a manually curated database of INTERACTORS, taken from literature. As NON-INTERACTORS database,
+This contains the files needed to generate the benchmark dataset used in the original paper. It contains a file XXXXXXXXXXXXXXXXXXXX with a manually curated database of INTERACTORS, taken from literature. Also contains an R script `generate_non_interacting_pairs.R` to generate the NON-INTERACTORS database `negative_interactors.xlsx` using `complex_components_xlsx` as compartment components sampling databe.
