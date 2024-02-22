@@ -28,14 +28,14 @@ usage() {
 
 # Searches and finds $ID in $database. Outputs ${ID}.fasta in the WD
 get_sequence() {
-	database=$1
-	ID=$2
+	database="$1"
+	ID="$2"
 	# Search for the ID in the fasta database and extract the sequence
 	find_flag=0
 	while read line; do
 		if [[ "$line" != ">"* ]]; then
 			continue
-		elif [[ "$line" == ">${ID}"* ]]; then
+		elif [[ "$line" == ">$ID" ]]; then
 			find_flag=1
 			echo "$line" > ${ID}.fasta
 			while read next_line; do
