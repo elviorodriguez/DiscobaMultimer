@@ -19,8 +19,6 @@ import re
 from Bio.Align import PairwiseAligner
 from collections import Counter
 
-
-
 ###############################################################################
 ############################## Checking and usage #############################
 ###############################################################################
@@ -36,7 +34,6 @@ if len(sys.argv) < 4:
     print("OUTPUT:")
     print("   output.a3m     : paired+unpaired a3m file with cardinality")
     sys.exit(1)
-
 
 # Assign the command-line arguments to variables
 output_file = sys.argv[1]   # output file name and path
@@ -59,6 +56,13 @@ for a3m_file in a3m_files.values():
 ###############################################################################
 ############################### Helper functions ##############################
 ###############################################################################
+
+def index_exists(lst, index):
+    try:
+        lst[index]
+        return True
+    except IndexError:
+        return False
 
 # Function to check if it is an homooligomer
 def is_homooligomer(a3m_files):
@@ -290,16 +294,33 @@ def global_alignment(query_seq, subject_seq):
         - Alignment score
     """
     
+    # Remove gaps
+    query_seq = query_seq.replace('-', '')
+    subject_seq = subject_seq.replace('-', '')
+    
+    # Compute 
     alignments = pairwise2.align.globalxx(query_seq, subject_seq)
     best_alignment = alignments[0]  # Get the highest-scoring alignment
-    aligned_query = best_alignment[0]
-    aligned_subject = best_alignment[1].replace('-', '')
-    alignment_score = best_alignment[2]
+    aligned_query = best_alignment.seqA
+    aligned_subject = best_alignment.seqB
+    alignment_score = best_alignment.score
     
-    coverage = len(aligned_subject) / len(query_seq) * 100
+    # Check if something went wrong
+    if len(aligned_query) != len(aligned_subject): 
+        raise ValueError(f"FATAL ERROR: something went wrong while performing global alignments of the following sequences: \nSEQUENCE_1: {query_seq}\nSEQUENCE_2: {subject_seq}")
+    
+    # Compute sequence coverage
+    match_counter = 0
+    for pos in range(len(aligned_query)):
+        if aligned_query[pos] != "-" and aligned_subject[pos] != "-":
+            match_counter += 1
+    coverage = match_counter / len(query_seq) * 100
     
     return aligned_query, aligned_subject, alignment_score, coverage
 
+# # Debugging
+# query_seq   = "METTLASYPLIRASTREWQYTVCMNH".replace('-', '')
+# subject_seq = "qqMEaaaTTLASYPLIRaaaASTREWQYaaaTVCMNH".replace('-', '')
 
 def get_N_seq_by_TaxID(taxid_grouped):
     for TaxID in taxid_grouped:
@@ -325,11 +346,84 @@ def get_all_keys(dicts):
         keys.update(d.keys())
     return list(keys)        
 
-def sort_by_similarity_to_query(taxid_grouped):
+def add_similarity_to_query(taxid_grouped):
+    """
+    Adds the annotations "similarity_to_query" and "coverage_to_query" to each
+    sequence record.
+    
+    Parameters
+    ----------
+    taxid_grouped : dict
+        Dictionary containing TaxID as keys and sequences as values.
+
+    Returns
+    -------
+    Nothing
+    
+        It modify the input dict by sorting the sequences in each TaxID from
+        highest to lowest similarity to the query and adds the annotation
+        "similarity_to_query" and "coverage_to_query" to each sequence record 
+        as annotation.
+
+    """
+   
+    # Iterate over each TaxID group and compute the similarity to the query
+    for TaxID in taxid_grouped.keys():
+        
+        # Skip calculations for the query sequence
+        if TaxID == "query":
+            taxid_grouped["query"][0].annotations["similarity_to_query"] = 0
+            taxid_grouped["query"][0].annotations["coverage_to_query"] = 100
+            continue
+
+        # Iterate over each seq in the TaxID group
+        for record in taxid_grouped[TaxID]:
+            
+            # Perform global alignment with the query and extract the score
+            aligned_query, aligned_subject, alignment_score, coverage = global_alignment(
+                query_seq = str(taxid_grouped["query"][0].seq),
+                subject_seq = str(record.seq))
+            
+            record.annotations["similarity_to_query"] = alignment_score
+            record.annotations["coverage_to_query"] = coverage
+                
+def remove_low_coverage_sequences(taxid_grouped_annotated, min_coverage):
+    """
+    Removes the low coverage sequences (< min_coverage) from TaxID dict
+
+    Parameters
+    ----------
+    taxid_grouped_annotated : dict
+        Dictionary containing TaxID as keys and sequences as values. Each
+        sequence record contains "similarity_to_query" and "coverage_to_query"
+        as annotations.
+    min_coverage : flot (0 to 100)
+        Cutoff coverage value
+
+    Returns
+    -------
+    None. Modifies the dictionaries by removing sequences with low coverage
+
+    """
+    for TaxID in list(taxid_grouped_annotated.keys()):
+        filtered_sequences = [
+            seq for seq in taxid_grouped_annotated[TaxID]
+            if seq.annotations["coverage_to_query"] >= min_coverage
+        ]
+        
+        if len(filtered_sequences) != len(taxid_grouped_annotated[TaxID]):
+            for seq in taxid_grouped_annotated[TaxID]:
+                if seq.annotations["coverage_to_query"] < min_coverage:
+                    print(f"Removing sequence: {seq}")
+                    print(f"Coverage: {seq.annotations['coverage_to_query']} < {min_coverage}")
+
+        taxid_grouped_annotated[TaxID] = filtered_sequences
+ 
+
+def sort_by_similarity_to_query(taxid_grouped_annotated):
     """
     Sorts the sequence records inside the TaxID groups from highest to lowest
     similarity to the query and modifies the input dictionay.
-    Adds the annotation "similarity_to_query"
     
     Parameters
     ----------
@@ -341,35 +435,27 @@ def sort_by_similarity_to_query(taxid_grouped):
     Nothing
     
         It modify the input dict by sorting the sequences in each TaxID from
-        highest to lowest similarity to the query and adds the annotation
-        "similarity_to_query" to each sequence record (except for query).
+        highest to lowest similarity to the query (except for query).
 
     """
    
     # Iterate over each TaxID group and compute the similarity to the query
-    for TaxID in taxid_grouped.keys():
+    for TaxID in taxid_grouped_annotated.keys():
         
         # Skip calculations for the query sequence
         if TaxID == "query":
-            taxid_grouped["query"][0].annotations["similarity_to_query"] = 0
             continue
 
         # Iterate over each seq in the TaxID group
-        for record in taxid_grouped[TaxID]:
-            
-            # Perform global alignment with the query and extract the score
-            aligned_query, aligned_subject, alignment_score, coverage = global_alignment(
-                query_seq = taxid_grouped["query"][0].seq,
-                subject_seq = record.seq)
-            
-            record.annotations["similarity_to_query"] = alignment_score
-            record.annotations["coverage_to_query"] = coverage
-                
+        for record in taxid_grouped_annotated[TaxID]:
+
             # Sort the records in the TaxID group by their similarity to the query
-            taxid_grouped[TaxID] = sorted(taxid_grouped[TaxID],
-                                          key=lambda x: x.annotations.get("similarity_to_query", 0),
-                                          # From highest to lowest
-                                          reverse=True)
+            taxid_grouped_annotated[TaxID] = sorted(
+                taxid_grouped_annotated[TaxID],
+                key=lambda x: x.annotations.get("similarity_to_query", 0),
+                # From highest to lowest
+                reverse=True)
+
 
 # # Debug
 # grouped_by_taxid_a3m = separate_by_tax_id(a3m_files["a3m_1"])
@@ -390,7 +476,9 @@ def sort_protein_sequences_by_similarity(input_file, output_file):
     # calculate similarity scores for each sequence
     similarity_scores = []
     for record in records[1:]:
-        alignment = aligner.align(reference_seq, record.seq)
+        alignment = aligner.align(str(reference_seq).replace("-", ""),
+                                      str(record.seq).replace("-", ""))
+
         similarity_score = alignment.score / max(len(reference_seq), len(record.seq))
         similarity_scores.append((record, similarity_score))
     # sort sequences by decreasing similarity
@@ -415,7 +503,7 @@ def insert_string_as_first_line(file_path, string):
 
 
 
-def pair_a3m(grouped_sorted_a3m_list, output_file, min_coverage):
+def pair_a3m(grouped_sorted_a3m_list, output_file):
     """
     Performs pairing alignment and generates a paired.a3m file.
 
@@ -465,6 +553,8 @@ def pair_a3m(grouped_sorted_a3m_list, output_file, min_coverage):
     Ns=','.join(['1']*len(queries["Lengths"]))
     IDs='\t'.join(queries["IDs"])
     cardinality = f"#{Ls}\t{Ns}"
+
+    # Paired queries as fasta (first paired sequeces)
     paired_query_header=f">{IDs}"
     paired_query_seq=''.join(queries["Seqs"])
  
@@ -478,64 +568,76 @@ def pair_a3m(grouped_sorted_a3m_list, output_file, min_coverage):
     # List all TaxIDs covered by all proteins
     all_TaxIDs = get_all_keys(grouped_sorted_a3m_list)
         
-    # Open a file for writing
+    # Open output file for writing
     with open(output_file, 'w') as f:
         
-        # Write cardinality and paired queries      
+        # Write cardinality and paired queries (first 3 lines)
         f.write(cardinality+'\n')
         f.write(paired_query_header+'\n')
         f.write(paired_query_seq+'\n')
         
-        # Parse the sequences by groups
+        # Parse the sequences by TaxID group
         for TaxID in all_TaxIDs:
             
-            # Check if all have sequences for the TaxID
-            if not all(TaxID in d for d in grouped_sorted_a3m_list):
-                # Debug
-                # print(f'The key "{TaxID}" is not in one of the dictionaries')
+            # Skip pairing if TaxID is in at least two sequences
+            if sum(TaxID in d for d in grouped_sorted_a3m_list) < 2:
+                # # Debug
+                # print(f'The key "{TaxID}" is not in at least two of the dictionaries')
                 continue
-            
+
             else:
-                # Debug
+                # # Debug
                 # print(f'TaxID: {TaxID} ----------------------------------------')
+                                    
+                # See which is the query with more sequences for the same TaxID
+                max_N_seq = max(len(position.get(TaxID, [])) for position in grouped_sorted_a3m_list)
                 
-                # See which query has more sequences for the same TaxID (notice that if any of the query sequences did not retrived an homolog at an specific TaxID, the paired alignment for that TaxID will be omitted)
-                min_N_seq = min(len(position[TaxID]) for position in grouped_sorted_a3m_list)
-                
-                # The list of seq for the TaxID is sorted by similarity to query
-                for rank in range(min_N_seq):
+                # Make the pairing one rank at a time (Seqs are sorted by similarity to query)
+                for rank in range(max_N_seq):
                     
-                    # Check if all have at least min_coverage % to the query
-                    all_covered = True
-                    for position in grouped_sorted_a3m_list:
-                        if position[TaxID][rank].annotations["coverage_to_query"] < min_coverage:
-                            all_covered = False
-                            break
+                    # Boolean list indicating which sequence have TaxID at current rank (eg [True, False, True])
+                    bool_list = list(index_exists(position.get(TaxID, []), rank) for position in grouped_sorted_a3m_list)
                     
-                    if all_covered:
-                        # Store subject IDs and sequences
-                        subjects = {"IDs" : [],
-                                   "Seqs" : []}
-                                                               
-                        # For each a3m position
-                        for position in grouped_sorted_a3m_list:
+                    # Skip pairing if TaxID is not in at least two sequences for the rank
+                    if sum(bool_list) < 2:
+                        # # Debug
+                        # print(f'The key "{TaxID}" is not in at least two of the dictionaries for the rank {rank}')
+                        continue
+                    
+                    # Store subject IDs and sequences
+                    subjects = {"IDs" : [],
+                               "Seqs" : []}
+                                                           
+                    # For each a3m position
+                    for i, position in enumerate(grouped_sorted_a3m_list):
+                        
+                        # If the position have a protein in the rank
+                        if bool_list[i]:
                             # Subject IDs
                             subjects["IDs"].append(position[TaxID][rank].id)
                             
                             # Subject Seqs
                             subjects["Seqs"].append(str(position[TaxID][rank].seq))
-                            
-                        # Pair the result
-                        paired_subj_header=">" + '\t'.join(subjects["IDs"])
-                        paired_subj_seq=''.join(subjects["Seqs"])
                         
-                        # # debug
-                        # print(paired_subj_header)
-                        # print(paired_subj_seq)
+                        # If the position does not have a protein at a given rank
+                        else:
+                            # Add empty ID
+                            subjects["IDs"].append(f"no_rank_{rank}")
                             
-                        # Write paired
-                        f.write(paired_subj_header+'\n')
-                        f.write(paired_subj_seq+'\n')
+                            # Fill with gaps
+                            subjects["Seqs"].append(str(int(queries["Lengths"][i])*"-"))
+                        
+                    # Pair the result
+                    paired_subj_header=">" + '\t'.join(subjects["IDs"])
+                    paired_subj_seq=''.join(subjects["Seqs"])
+                    
+                    # # debug
+                    # print(paired_subj_header)
+                    # print(paired_subj_seq)
+                        
+                    # Write paired
+                    f.write(paired_subj_header+'\n')
+                    f.write(paired_subj_seq+'\n')
     
     sort_protein_sequences_by_similarity(output_file, "temporal_file")
     insert_string_as_first_line("temporal_file", cardinality)
@@ -689,8 +791,58 @@ def update_dictionary_keys(dictionary):
 ################################### Running ###################################
 ###############################################################################
 
-# Set min coverage for pairing at 50%
-min_coverage = 50 
+# # DEBUGGING input -------------------------------------------------------------
+
+# def create_concatenated_filename(file_paths):
+#     """
+#     Takes a list of file paths and returns a string where the base names of the files
+#     are concatenated with '__vs__' and the '.a3m' extension is added at the end.
+
+#     :param file_paths: List of file paths
+#     :return: Concatenated string
+#     """
+#     # Extract the base names without extensions
+#     base_names = [os.path.splitext(os.path.basename(path))[0] for path in file_paths]
+    
+#     # Join the names with '__vs__' separator
+#     joined_names = '__vs__'.join(base_names)
+    
+#     # Add the .a3m extension
+#     result = f"{joined_names}.a3m"
+    
+#     return result
+
+
+# os.chdir('/home/elvio/DiscobaMultimer/scripts')
+# input_a3ms_1 = ["../testing/BDF2.a3m", "../testing/TIF2.a3m"]
+# input_a3ms_2 = ["../testing/BDF2.a3m", "../testing/TelAP1.a3m", "../testing/TelAP2.a3m"]
+# input_a3ms_3 = ["../testing/BDF2.a3m", "../testing/TIF2.a3m", "../testing/TRF.a3m"]
+
+# to_test = input_a3ms_1
+
+# output_file = "../testing/" + create_concatenated_filename(to_test)
+
+# a3m_files={}
+# for i, a3m_f in enumerate(to_test):
+#     a3m_files[f"a3m_{i+1}"] = a3m_f
+
+# # # Debug
+# # print(output_file)
+# # print(a3m_files.keys())
+# # print(a3m_files.values())
+
+# # Check if input files are in .a3m format
+# for a3m_file in a3m_files.values():
+#     if not a3m_file.endswith('.a3m'):
+#         print("ERROR: Input files must be in .a3m format.", file=sys.stderr)
+#         sys.exit(1)
+
+
+# Running ---------------------------------------------------------------------
+
+
+# Set min coverage for pairing at 10%
+min_coverage = 10
 
 # Check if there is any protein repeated in the list
 is_repeated = is_protein_repeated(a3m_files)
@@ -701,19 +853,32 @@ if is_repeated:
     each_protein_number = sorted(each_protein_number, key=lambda x: list(a3m_files.values()).index(x[0]))
     a3m_files = update_dictionary_keys(remove_duplicates(a3m_files))
 
-# Group a3m files sequences by TaxID and rank them by similarity to query
+# Group a3m files sequences by TaxID, remove low coverage and sort
 a3m_taxid =  {}
 for a3m in a3m_files.keys():
-    a3m_taxid[a3m] = separate_by_tax_id(a3m_files[a3m])
-    sort_by_similarity_to_query(a3m_taxid[a3m])
     
+    # Grouping by TaxID
+    a3m_taxid[a3m] = separate_by_tax_id(a3m_files[a3m])
+    
+    # Annotate
+    add_similarity_to_query(taxid_grouped = a3m_taxid[a3m])
+    
+
+    # Remove sequences with less than min_coverage % to query
+    remove_low_coverage_sequences(taxid_grouped_annotated = a3m_taxid[a3m],
+                                  min_coverage = min_coverage)
+    
+    # Rank them by similarity to query
+    sort_by_similarity_to_query(a3m_taxid[a3m])
+
+
 # Convert a3m_taxid to list of dict
 grouped_sorted_a3m_list = []
 for a3m in a3m_taxid.keys():
     grouped_sorted_a3m_list.append(a3m_taxid[a3m])
-    
+
 # Generate a file with the paired part
-pair_a3m(grouped_sorted_a3m_list, output_file, min_coverage)
+pair_a3m(grouped_sorted_a3m_list, output_file)
     
 # Append the unpaired part to the file
 add_unpaired(output_file, a3m_files)
