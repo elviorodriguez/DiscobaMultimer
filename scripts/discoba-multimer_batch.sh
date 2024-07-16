@@ -20,7 +20,7 @@ command -v mmseqs >/dev/null 2>&1 || { echo >&2 "ERROR: MMseqs2 not found. Insta
 REFORMAT=$DiscobaMultimerPath/scripts/reformat_mmseq_table.py
 # --------------------------------------------------------------------------
 
-WD=`pwd`
+WD=$(pwd)
 
 usage() {
 	echo "USAGE: $0 [OPTIONS] <database.fasta> <IDs_table.txt>"
@@ -28,7 +28,8 @@ usage() {
 	echo " IDs_table.txt	: list of IDs to generate the paired+unpaired MSAs (.tsv)"
 	echo "OPTIONS:"
 	echo " -h 			: full help message"
-	echo " -m			: computes MSAs"
+	echo " -m			: computes MSAs (stringent mode)"
+	echo " -M			: computes MSAs (greedy mode - RECOMMENDED)"
 	echo " -p			: performs MSA plots"
 	echo " -r			: runs RoseTTAFold 2-track"
 	echo " -a			: runs AlphaFold2-multimer"
@@ -163,6 +164,7 @@ help_msg() {
 
 # Options
 make_MSA=false
+make_MSA_greedy=false
 make_plot=false
 rosettafold=false
 rosettafold_tag=""
@@ -172,14 +174,14 @@ import_MSA=false
 import_MSA_tag=""
 sizes=false
 sizes_tag=""
-AF2_conf=false
+# AF2_conf=false
 AF2_conf_tag=""
 AF2_conf_file=""
-default_filter=false
-custom_filter=false
-custom_threshold=false
+# default_filter=false
+# custom_filter=false
+# custom_threshold=false
 use_multiple_GPUs=false
-while getopts "hmpag:c:ri:s:" opt; do
+while getopts "hmMpag:c:ri:s:" opt; do
   case ${opt} in
     h)
       help_msg
@@ -187,6 +189,10 @@ while getopts "hmpag:c:ri:s:" opt; do
     m)
       make_MSA=true
       ;;
+	M)
+	  make_MSA=true
+	  make_MSA_greedy=true
+	  ;;
     p)
       make_plot=true
       ;;
@@ -282,6 +288,12 @@ elif [ "$make_MSA" == "false" ] && [ "$make_plot" == "true" ]; then
 	usage
 fi
 
+# Check MSA methods compatibility
+if [ "$import_MSA" == "true" ] && [ "$make_MSA_greedy" == "true" ]; then
+	echo "ERROR: -i and -M options are incompatible"
+	usage
+fi
+
 if [ "$sizes" == "true" ]; then
 	if  [[ ! "$min_size" =~ ^[0-9]+$ ]]; then
 		echo "ERROR: minimum and maximum size format is incorrect"
@@ -320,10 +332,11 @@ echo " - Database: $database_file"
 echo " - ID table: $IDs_table_file"
 [ "$AF2_conf_file" != "" ] && echo " - AF2 conf: $AF2_conf_file"
 echo "OPTIONS:"
-echo " - MSA    (-m): $make_MSA"
-echo " - Plot   (-p): $make_plot"
-echo " - RF2    (-r): $rosettafold"
-echo " - AF2    (-a): $alphafold"
+echo " - MSA    (-m): ${make_MSA}"
+echo " - MSA g  (-M): ${make_MSA_greedy}"
+echo " - Plot   (-p): ${make_plot}"
+echo " - RF2    (-r): ${rosettafold}"
+echo " - AF2    (-a): ${alphafold}"
 echo " - Import (-i): $import_MSA" ; [ "$import_MSA" == "true" ] && echo "    path: $merged_msa_path"
 echo " - Sizes  (-s): $sizes" ; [ "$sizes" == "true" ] && echo "    min: $min_size" && echo "    max: $max_size"
 echo " - GPUs   (-g): $use_multiple_GPUs"; [ "$use_multiple_GPUs" == "true" ] && echo "    number: $gpus_number"
@@ -339,6 +352,10 @@ if [ "$make_MSA" == "true" ]; then
 	[ ! -d merged_MSA ] && mkdir merged_MSA		# Output path
 	add_time "Batch generation of MSA..."
 	while read line; do
+		
+		# Skip lines that start with '#' (comments)
+		[[ "$line" =~ ^#.*$ ]] && continue
+
 		# Read IDs from the line
 		IFS=$'\t' read -r -a IDs_array <<< "$line"
 		paired_name=`printf '%s__vs__' "${IDs_array[@]}" | sed 's/__vs__$//'`
@@ -363,8 +380,14 @@ if [ "$make_MSA" == "true" ]; then
 		if [ $IDs_number -lt 2 ]; then
 			add_time "	WARNING: At least 2 IDs are requiered. Ignoring IDs line."
 		else
-			# Get MSAs
-			$GetDiscobaMSA $database_file "${IDs_array[@]}"
+			# -------------- Get MSAs --------------
+			# DiscobaMSA
+			if [ "${make_MSA_greedy}" == "true" ]; then
+				$GetDiscobaMSA -greedy $database_file "${IDs_array[@]}"
+			else
+				$GetDiscobaMSA $database_file "${IDs_array[@]}"
+			fi
+			# ColabFoldMSA
 			$GetColabFoldMSA $database_file "${IDs_array[@]}"
 			
 			# Merge the MSAs
@@ -529,6 +552,8 @@ if [ "$rosettafold" == "true" ]; then
 	# Scan IDs_file one line at a time
 	while read line; do
 		
+		# Skip lines that start with '#'
+		[[ "$line" =~ ^#.*$ ]] && continue
 
 		# Read IDs from the line
 		IFS=$'\t' read -r -a IDs_array <<< "$line"
@@ -640,6 +665,9 @@ if [ "$alphafold" == "true" ]; then
 
 	# Scan IDs_file one line at a time
 	while read line; do
+
+		# Skip lines that start with '#'
+		[[ "$line" =~ ^#.*$ ]] && continue
 		
 		# Read IDs from the line
 		IFS=$'\t' read -r -a IDs_array <<< "$line"
