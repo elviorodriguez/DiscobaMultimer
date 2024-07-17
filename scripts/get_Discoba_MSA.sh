@@ -7,6 +7,7 @@
 RUN_MMSEQS_DISCOBA=$DiscobaMultimerPath/scripts/run_MMseqs2_to_get_DiscobaMSA_3.0.sh
 # Path to perform_pairing.py
 PAIRING=$DiscobaMultimerPath/scripts/perform_pairing_general_solution.py
+GREEDY_PAIRING=$DiscobaMultimerPath/scripts/perform_greedy_pairing.py
 
 # SUB-DEPENDENCIES ---------------------------------------------------------
 # mmseqs in the PATH
@@ -19,12 +20,13 @@ REFORMAT=$DiscobaMultimerPath/scripts/reformat_mmseq_table.py
 # --------------------------------------------------------------------------
 
 usage() {
-	echo "USAGE: $0 <database> <protein_ID_1> <protein_ID_2> [<protein_ID_n>]"
-	echo " database		: protein database in fasta containing the queries"
+	echo "USAGE: $0 [-greedy] <database> <protein_ID_1> <protein_ID_2> [<protein_ID_n>]"
+	echo "  -greedy			: Use greedy pairing method"
+	echo "  database		: protein database in fasta containing the queries"
 	echo "			  (typically the proteome of an organism)"
-	echo " protein_ID_1	: ID of the first protein. Must be contained in the DB"
-	echo " protein_ID_2	: ID of the second protein. Must be contained in the DB"
-	echo " protein_ID_n	: ID of the Nth protein (optional, as many as needed)"
+	echo "  protein_ID_1	: ID of the first protein. Must be contained in the DB"
+	echo "  protein_ID_2	: ID of the second protein. Must be contained in the DB"
+	echo "  protein_ID_n	: ID of the Nth protein (optional, as many as needed)"
 	echo "OUTPUT:"
 	echo "  - a3m file named <protein_ID_1>__vs__<protein_ID_2>__vs__[etc].a3m"
 	echo "		Has cardinality as first line (e.g. #421,512	1,1)"
@@ -34,6 +36,13 @@ usage() {
 	echo "	  will skip this part and continue with the pairing."
 	exit 1
 }
+
+# Check if -greedy option is passed
+greedy_mode=false
+if [ "$1" == "-greedy" ]; then
+	greedy_mode=true
+	shift
+fi
 
 # Check input ---------------------------------------------------------
 if [ $# -lt 3 ]; then
@@ -50,7 +59,7 @@ IDs_number=$(($# - 1))
 IDs_array=()
 
 echo "Number of IDs: $IDs_number"
-# Assing each ID to a variable
+# Assign each ID to a variable
 for i in $(seq 2 $#); do
 	# Create a variable with a dynamic name
 	var_name="ID_$((i - 1))"
@@ -86,9 +95,8 @@ output_a3m=${output_a3m%"__vs__"}.a3m
 
 # Output directory to store the a3m MSAs
 output_dir=discoba_paired_unpaired
-	
 
-# If the output directory do not exist, create it
+# If the output directory does not exist, create it
 if [ ! -d $output_dir ]; then
 	mkdir $output_dir
 fi
@@ -97,9 +105,14 @@ fi
 if [ ! -f $output_dir/$output_a3m ]; then
 	echo "Generating paired+unpaired alignment..."
 
-	# perform the pairing
-	# USAGE: python perform_pairing.py <output.a3m> <prot_ID1.a3m> <prot_ID2.a3m> [<prot_IDn.a3m>]
-	python3 $PAIRING $output_a3m ${a3m_files[@]}
+	# Choose the pairing method based on the greedy_mode flag
+	if [ "$greedy_mode" = true ]; then
+		# perform greedy pairing
+		python3 $GREEDY_PAIRING $output_a3m ${a3m_files[@]}
+	else
+		# perform the standard pairing
+		python3 $PAIRING $output_a3m ${a3m_files[@]}
+	fi
 
 	# move the results to the output dir
 	mv $output_a3m $output_dir
@@ -111,6 +124,4 @@ else
 	exit 0
 fi
 
-
 echo "Output file: $output_dir/$output_a3m"
-

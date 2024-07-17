@@ -190,6 +190,9 @@ if [ "$make_MSA" == "true" ]; then
 	
 	# Read IDs_table.txt one line at a time
 	while IFS=$'\t' read -r -a IDs_array; do
+
+		# Skip lines that start with '#' (comments)
+		[[ "$IDs_array" =~ ^#.*$ ]] && continue
 		
 		# If the line contains more than one ID 
 		if [ "${#IDs_array[@]}" -ne 1 ]; then
@@ -276,6 +279,9 @@ if [ "$alphafold" == "true" ]; then
 
 	# Scan IDs_file one line at a time
 	while IFS=$'\t' read -r -a IDs_array; do
+
+		# Skip lines that start with '#' (comments)
+		[[ "$IDs_array" =~ ^#.*$ ]] && continue
 
 		# If the line contains more than one ID
                 if [ "${#IDs_array[@]}" -ne 1 ]; then
