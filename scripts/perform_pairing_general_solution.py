@@ -398,7 +398,8 @@ def sort_protein_sequences_by_similarity(input_file, output_file):
     # calculate similarity scores for each sequence
     similarity_scores = []
     for record in records[1:]:
-        alignment = aligner.align(reference_seq, record.seq)
+        alignment = aligner.align(str(reference_seq).replace("-", ""),
+                                  str(record.seq).replace("-", ""))
         similarity_score = alignment.score / max(len(reference_seq), len(record.seq))
         similarity_scores.append((record, similarity_score))
     # sort sequences by decreasing similarity
