@@ -135,7 +135,7 @@ if [ ! -f "./colabfold_MSA/$output_a3m_file" ]; then
 		done
 	fi
 
-	colabfold_batch --num-recycle 0 --num-models 1 --num-seeds -1 tmp_MSA2/${output_a3m}.fasta tmp_MSA || echo "DONE: IndexError at this point is expected."
+	colabfold_batch --num-recycle 0 --num-models 1 --num-seeds -1 tmp_MSA2/${output_a3m}.fasta tmp_MSA 2> /dev/null || echo "DONE: ColabFold MSA saved."
 
 	# Move results and remove temporary files
 	mv tmp_MSA/$output_a3m_file $output_dir

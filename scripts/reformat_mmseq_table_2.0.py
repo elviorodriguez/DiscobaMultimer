@@ -47,7 +47,7 @@ for mmseq_line in mmseq_data:
   mmseq_line=mmseq_line.replace("\r", "").replace("\n", "").split("\t")
   mmseq_count+=1
   #Parse cigar
-  mmseq_cigar=re.findall('(\d+)([MDI])?', mmseq_line[7])
+  mmseq_cigar=re.findall(r'(\d+)([MDI])?', mmseq_line[7])
   #Pad start of alignment
   alignment_seq="-"*(int(mmseq_line[2])-1)
   alignment_index=int(mmseq_line[4])-1;
